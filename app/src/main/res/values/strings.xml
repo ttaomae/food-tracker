@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Food Tracker</string>
+    <string name="name_label">Name</string>
+    <string name="description_label">Description</string>
+    <string name="rating_label">Rating</string>
+    <string name="add_item_label">Add</string>
+</resources>
