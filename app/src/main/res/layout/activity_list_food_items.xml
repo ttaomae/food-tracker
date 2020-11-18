@@ -20,6 +20,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
+        android:focusable="true"
         android:clickable="true"
         android:onClick="addFoodItem"
         app:layout_constraintBottom_toBottomOf="parent"
