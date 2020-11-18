@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ttaomae.foodtracker.model.FoodItem
+import ttaomae.foodtracker.data.FoodItem
 
 
 class ListFoodItemsActivity : AppCompatActivity() {
@@ -20,36 +20,47 @@ class ListFoodItemsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_food_items)
 
-        val items = (application as FoodTrackerApplication).foodItems
-        println(items)
+        val foodRepo = (application as FoodTrackerApplication).foodRepository
 
         val linearLayoutManager = LinearLayoutManager(this)
-        val foodItemAdapter = FoodItemAdapter()
-        foodItemAdapter.submitList(items)
+        val foodItemAdapter = FoodItemAdapter { startAddFoodItemActivity(it) }
+        foodItemAdapter.submitList(foodRepo.getAll())
         findViewById<RecyclerView>(R.id.itemsList).apply {
             setHasFixedSize(true)
             layoutManager = linearLayoutManager
             adapter = foodItemAdapter
         }
-
     }
 
     fun addFoodItem(view: View) {
+        startAddFoodItemActivity(null)
+    }
+
+    private fun startAddFoodItemActivity(item: FoodItem?) {
         val intent = Intent(this, AddFoodItemActivity::class.java)
+        item?.apply { intent.putExtra("itemId", item.id) }
         startActivity(intent)
     }
 }
 
-class FoodItemAdapter() :
+class FoodItemAdapter(private val onClick: (FoodItem) -> Unit) :
     ListAdapter<FoodItem, FoodItemAdapter.ViewHolder>(FoodItemCallback) {
 
-    class ViewHolder(view: View) :
+    class ViewHolder(view: View, private val onClick: (FoodItem) -> Unit) :
         RecyclerView.ViewHolder(view) {
 
         val nameView: TextView = view.findViewById(R.id.nameTextView)
         val descriptionView: TextView = view.findViewById(R.id.descriptionTextView)
         val ratingBar: RatingBar = view.findViewById(R.id.ratingBarDisplay)
         var item: FoodItem? = null
+
+        init {
+            view.setOnClickListener {
+                item?.let {
+                    onClick(it)
+                }
+            }
+        }
 
         fun bind(item: FoodItem) {
             nameView.text = item.name
@@ -61,7 +72,7 @@ class FoodItemAdapter() :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.food_item, parent, false)
-        return ViewHolder(view)
+        return ViewHolder(view, onClick)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
