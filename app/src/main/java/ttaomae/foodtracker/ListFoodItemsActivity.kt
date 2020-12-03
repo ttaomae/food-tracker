@@ -1,30 +1,40 @@
 package ttaomae.foodtracker
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import ttaomae.foodtracker.data.FoodItem
+import ttaomae.foodtracker.data.FoodRepository
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class ListFoodItemsActivity : AppCompatActivity() {
+    @Inject lateinit var foodRepository: FoodRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_food_items)
 
-        val foodRepo = (application as FoodTrackerApplication).foodRepository
-
         val linearLayoutManager = LinearLayoutManager(this)
         val foodItemAdapter = FoodItemAdapter { startAddFoodItemActivity(it) }
-        foodItemAdapter.submitList(foodRepo.getAll())
+        runBlocking {
+            launch {
+                val food = foodRepository.getAll()
+                foodItemAdapter.submitList(food)
+            }
+        }
         findViewById<RecyclerView>(R.id.itemsList).apply {
             setHasFixedSize(true)
             layoutManager = linearLayoutManager

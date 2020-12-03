@@ -1,37 +1,17 @@
 package ttaomae.foodtracker.data
 
+import javax.inject.Inject
+import javax.inject.Singleton
+
 interface FoodRepository {
-    fun get(id: String): FoodItem?
-    fun getAll(): List<FoodItem>
-    fun save(item: FoodItem)
-    fun remove(id: Long)
+    suspend fun get(id: Long): FoodItem?
+    suspend fun getAll(): List<FoodItem>
+    suspend fun save(item: FoodItem)
 }
 
-class InMemoryFoodRepository : FoodRepository {
-    private var nextId: Long = 0
-    private val items: MutableMap<String, FoodItem> = mutableMapOf()
-
-    override fun get(id: String): FoodItem? {
-        return items[id]
-    }
-
-    override fun getAll(): List<FoodItem> {
-        return items.values.toList()
-    }
-
-    override fun save(item: FoodItem) {
-        if (item.id == null) {
-            // Find next ID.
-            while (items.containsKey(nextId.toString())) nextId++
-
-            items[nextId.toString()] = FoodItem(nextId.toString(), item)
-            nextId++
-        } else {
-            items[item.id] = item
-        }
-    }
-
-    override fun remove(id: Long) {
-        items.remove(id)
-    }
+@Singleton
+class FoodDaoRepository @Inject constructor(private val foodItemDao: FoodItemDao) : FoodRepository {
+    override suspend fun get(id: Long): FoodItem? =  foodItemDao.findById(id)
+    override suspend fun getAll(): List<FoodItem> = foodItemDao.findAll()
+    override suspend fun save(item: FoodItem) = foodItemDao.insertFoodItem(item)
 }
