@@ -11,7 +11,5 @@ data class FoodItem(
     @PrimaryKey val id: Long?,
     val name: String,
     val description: String,
-    val rating: Float)
-: Parcelable {
-    constructor(id: Long, item: FoodItem) : this(id, item.name, item.description, item.rating)
-}
+    val rating: Float
+) : Parcelable

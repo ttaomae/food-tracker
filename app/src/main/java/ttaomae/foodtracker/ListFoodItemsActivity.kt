@@ -16,12 +16,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ttaomae.foodtracker.data.FoodItem
-import ttaomae.foodtracker.data.FoodRepository
+import ttaomae.foodtracker.data.FoodItemRepository
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class ListFoodItemsActivity : AppCompatActivity() {
-    @Inject lateinit var foodRepository: FoodRepository
+    @Inject lateinit var foodItemRepository: FoodItemRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +31,7 @@ class ListFoodItemsActivity : AppCompatActivity() {
         val foodItemAdapter = FoodItemAdapter { startAddFoodItemActivity(it) }
         runBlocking {
             launch {
-                val food = foodRepository.getAll()
+                val food = foodItemRepository.getAll()
                 foodItemAdapter.submitList(food)
             }
         }
