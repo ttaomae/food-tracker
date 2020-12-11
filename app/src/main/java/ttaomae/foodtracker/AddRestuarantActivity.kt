@@ -34,11 +34,11 @@ class AddRestuarantActivity : AppCompatActivity() {
             job.join()
         }
 
-        findViewById<EditText>(R.id.editTextRestaurantName).apply { setText(restaurant?.name) }
+        findViewById<EditText>(R.id.edit_text_restaurant_name).apply { setText(restaurant?.name) }
     }
 
     fun addRestaurant(view: View) {
-        val nameView = findViewById<EditText>(R.id.editTextRestaurantName)
+        val nameView = findViewById<EditText>(R.id.edit_text_restaurant_name)
 
         if (nameView.text.isBlank()) {
             return

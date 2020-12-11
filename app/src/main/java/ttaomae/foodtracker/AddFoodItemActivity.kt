@@ -32,15 +32,15 @@ class AddFoodItemActivity : AppCompatActivity() {
             job.join()
         }
 
-        findViewById<EditText>(R.id.editTextName).apply { setText(item?.name) }
-        findViewById<EditText>(R.id.editTextDescription).apply { setText(item?.description) }
-        findViewById<RatingBar>(R.id.ratingBar).apply { rating = item?.rating ?: 0f }
+        findViewById<EditText>(R.id.edit_text_item_name).apply { setText(item?.name) }
+        findViewById<EditText>(R.id.edit_text_item_description).apply { setText(item?.description) }
+        findViewById<RatingBar>(R.id.rating_bar_item_input).apply { rating = item?.rating ?: 0f }
     }
 
     fun addFoodItem(view: View) {
-        val nameView = findViewById<EditText>(R.id.editTextName)
-        val descriptionView = findViewById<EditText>(R.id.editTextDescription)
-        val ratingBar = findViewById<RatingBar>(R.id.ratingBar)
+        val nameView = findViewById<EditText>(R.id.edit_text_item_name)
+        val descriptionView = findViewById<EditText>(R.id.edit_text_item_description)
+        val ratingBar = findViewById<RatingBar>(R.id.rating_bar_item_input)
 
         if (nameView.text.isBlank()) {
             return

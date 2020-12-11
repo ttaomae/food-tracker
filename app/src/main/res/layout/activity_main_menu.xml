@@ -20,14 +20,14 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/viewRestaurantsButton"
+            android:id="@+id/button_view_restaurants"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="viewRestaurants"
             android:text="@string/view_restaurants_label" />
 
         <Button
-            android:id="@+id/viewFoodItemsButton"
+            android:id="@+id/button_view_items"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="viewFoodItems"

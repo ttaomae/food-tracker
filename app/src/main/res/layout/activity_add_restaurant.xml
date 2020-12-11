@@ -22,13 +22,13 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textViewRestuarantName"
+                android:id="@+id/text_view_restaurant_name_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/restaurant_name_label" />
 
             <EditText
-                android:id="@+id/editTextRestaurantName"
+                android:id="@+id/edit_text_restaurant_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -37,7 +37,7 @@
     </TableLayout>
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/button_add_restaurant"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

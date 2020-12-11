@@ -35,7 +35,7 @@ class ListRestuarantsActivity : AppCompatActivity() {
                 restaurantAdapter.submitList(restaurants)
             }
         }
-        findViewById<RecyclerView>(R.id.restaurantsList).apply {
+        findViewById<RecyclerView>(R.id.recycler_view_restaurants_list).apply {
             setHasFixedSize(true)
             layoutManager = linearLayoutManager
             adapter = restaurantAdapter
@@ -59,7 +59,7 @@ class RestaurantAdapter(private val onClick: (Restaurant) -> Unit) :
     class ViewHolder(view: View, private val onClick: (Restaurant) -> Unit) :
         RecyclerView.ViewHolder(view) {
 
-        val nameView: TextView = view.findViewById(R.id.restaurantNameTextView)
+        val nameView: TextView = view.findViewById(R.id.text_view_restaurant_name)
         var item: Restaurant? = null
 
         init {
