@@ -47,7 +47,7 @@ class ListFoodItemsActivity : AppCompatActivity() {
     }
 
     private fun startAddFoodItemActivity(item: FoodItem?) {
-        val intent = Intent(this, AddFoodItemActivity::class.java)
+        val intent = Intent(this, EditFoodItemActivity::class.java)
         item?.apply { intent.putExtra("itemId", item.id) }
         startActivity(intent)
     }

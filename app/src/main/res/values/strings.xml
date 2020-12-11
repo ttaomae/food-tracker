@@ -8,4 +8,6 @@
     <string name="add_restaurant_label">Add</string>
     <string name="view_food_items_label">View Food Items</string>
     <string name="view_restaurants_label">View Restaurants</string>
+    <string name="delete_item_label">Delete</string>
+    <string name="delete_restaurant_label">Delete</string>
 </resources>

@@ -3,6 +3,7 @@ package ttaomae.foodtracker
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import android.widget.RatingBar
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +15,7 @@ import ttaomae.foodtracker.data.FoodItemRepository
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AddFoodItemActivity : AppCompatActivity() {
+class EditFoodItemActivity : AppCompatActivity() {
     private var item: FoodItem? = null
     @Inject lateinit var foodItemRepository: FoodItemRepository
 
@@ -35,6 +36,9 @@ class AddFoodItemActivity : AppCompatActivity() {
         findViewById<EditText>(R.id.edit_text_item_name).apply { setText(item?.name) }
         findViewById<EditText>(R.id.edit_text_item_description).apply { setText(item?.description) }
         findViewById<RatingBar>(R.id.rating_bar_item_input).apply { rating = item?.rating ?: 0f }
+
+        // Disable button if we are adding a new item.
+        findViewById<Button>(R.id.button_delete_item).isEnabled = item != null
     }
 
     fun addFoodItem(view: View) {
@@ -61,6 +65,18 @@ class AddFoodItemActivity : AppCompatActivity() {
             }
         }
 
+        val intent = Intent(this, ListFoodItemsActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun deleteFoodItem(view: View) {
+        item?.let {
+            runBlocking {
+                launch {
+                    foodItemRepository.delete(it)
+                }
+            }
+        }
 
         val intent = Intent(this, ListFoodItemsActivity::class.java)
         startActivity(intent)

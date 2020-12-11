@@ -30,6 +30,9 @@ interface FoodItemDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(foodItem: FoodItem)
+
+    @Delete
+    suspend fun delete(foodItem: FoodItem)
 }
 
 @Dao
@@ -42,4 +45,7 @@ interface RestaurantDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(restaurant: Restaurant)
+
+    @Delete
+    suspend fun delete(restaurant: Restaurant)
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddRestuarantActivity">
+    tools:context=".EditRestuarantActivity">
 
     <TableLayout
         android:id="@+id/tableLayout2"
@@ -47,5 +47,17 @@
         android:text="@string/add_restaurant_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tableLayout2" />
+
+    <Button
+        android:id="@+id/button_delete_restaurant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:onClick="deleteRestaurant"
+        android:text="@string/delete_restaurant_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_add_restaurant" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

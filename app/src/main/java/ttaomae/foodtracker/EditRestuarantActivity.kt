@@ -3,20 +3,18 @@ package ttaomae.foodtracker
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
-import android.widget.RatingBar
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import ttaomae.foodtracker.data.FoodItem
-import ttaomae.foodtracker.data.FoodItemRepository
 import ttaomae.foodtracker.data.Restaurant
 import ttaomae.foodtracker.data.RestaurantRepository
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AddRestuarantActivity : AppCompatActivity() {
+class EditRestuarantActivity : AppCompatActivity() {
     private var restaurant: Restaurant? = null
     @Inject lateinit var restaurantRepository: RestaurantRepository
 
@@ -35,6 +33,9 @@ class AddRestuarantActivity : AppCompatActivity() {
         }
 
         findViewById<EditText>(R.id.edit_text_restaurant_name).apply { setText(restaurant?.name) }
+
+        // Disable button if we are adding a new item.
+        findViewById<Button>(R.id.button_delete_restaurant).isEnabled = restaurant != null
     }
 
     fun addRestaurant(view: View) {
@@ -51,6 +52,18 @@ class AddRestuarantActivity : AppCompatActivity() {
             }
         }
 
+        val intent = Intent(this, ListRestuarantsActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun deleteRestaurant(view: View) {
+        restaurant?.let {
+            runBlocking {
+                launch {
+                    restaurantRepository.delete(it)
+                }
+            }
+        }
 
         val intent = Intent(this, ListRestuarantsActivity::class.java)
         startActivity(intent)

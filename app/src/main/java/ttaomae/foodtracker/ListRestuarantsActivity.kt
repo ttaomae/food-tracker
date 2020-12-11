@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import ttaomae.foodtracker.data.FoodItem
 import ttaomae.foodtracker.data.Restaurant
 import ttaomae.foodtracker.data.RestaurantRepository
 import javax.inject.Inject
@@ -47,7 +46,7 @@ class ListRestuarantsActivity : AppCompatActivity() {
     }
 
     private fun startAddRestaurantActivity(item: Restaurant?) {
-        val intent = Intent(this, AddRestuarantActivity::class.java)
+        val intent = Intent(this, EditRestuarantActivity::class.java)
         item?.apply { intent.putExtra("itemId", item.id) }
         startActivity(intent)
     }
