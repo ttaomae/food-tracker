@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ttaomae.foodtracker.data.AppDatabase
 import ttaomae.foodtracker.data.FoodItemDao
+import ttaomae.foodtracker.data.RestaurantDao
 import javax.inject.Singleton
 
 @Module
@@ -22,5 +23,10 @@ class DatabaseModule {
     @Provides
     fun provideFoodItemDao(appDatabase: AppDatabase): FoodItemDao {
         return appDatabase.foodItemDao()
+    }
+
+    @Provides
+    fun provideRestaurantDao(appDatabase: AppDatabase): RestaurantDao {
+        return appDatabase.restaurantDao()
     }
 }

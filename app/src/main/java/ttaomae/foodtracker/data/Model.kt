@@ -13,3 +13,7 @@ data class FoodItem(
     val description: String,
     val rating: Float
 ) : Parcelable
+
+@Parcelize
+@Entity(tableName = "restaurant")
+data class Restaurant(@PrimaryKey val id: Long?, val name: String)
