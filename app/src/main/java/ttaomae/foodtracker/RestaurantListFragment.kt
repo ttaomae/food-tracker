@@ -1,16 +1,18 @@
 package ttaomae.foodtracker
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -19,70 +21,67 @@ import ttaomae.foodtracker.data.RestaurantRepository
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ListRestuarantsActivity : AppCompatActivity() {
+class ListRestaurantFragment : Fragment(R.layout.fragment_restaurant_list) {
     @Inject lateinit var restaurantRepository: RestaurantRepository
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list_restaurants)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        val linearLayoutManager = LinearLayoutManager(this)
-        val restaurantAdapter = RestaurantAdapter { startAddRestaurantActivity(it) }
+        val restaurantAdapter = RestaurantAdapter()
+
+        // Load restaurants from repository.
         runBlocking {
             launch {
                 val restaurants = restaurantRepository.getAll()
                 restaurantAdapter.submitList(restaurants)
             }
         }
-        findViewById<RecyclerView>(R.id.recycler_view_restaurants_list).apply {
+
+        // Setup RecyclerView.
+        view.findViewById<RecyclerView>(R.id.recycler_view_restaurants_list).apply {
             setHasFixedSize(true)
-            layoutManager = linearLayoutManager
+            layoutManager = LinearLayoutManager(context)
             adapter = restaurantAdapter
         }
-    }
 
-    fun addRestaurant(view: View) {
-        startAddRestaurantActivity(null)
-    }
-
-    private fun startAddRestaurantActivity(item: Restaurant?) {
-        val intent = Intent(this, EditRestuarantActivity::class.java)
-        item?.apply { intent.putExtra("itemId", item.id) }
-        startActivity(intent)
+        // Set add button behavior.
+        view.findViewById<FloatingActionButton>(R.id.fab_add_restaurant).setOnClickListener {
+            val action = ListRestaurantFragmentDirections.actionLoadRestaurantDetails()
+            findNavController().navigate(action)
+        }
     }
 }
 
-class RestaurantAdapter(private val onClick: (Restaurant) -> Unit) :
+class RestaurantAdapter :
     ListAdapter<Restaurant, RestaurantAdapter.ViewHolder>(RestaurantCallback) {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-    class ViewHolder(view: View, private val onClick: (Restaurant) -> Unit) :
-        RecyclerView.ViewHolder(view) {
-
-        val nameView: TextView = view.findViewById(R.id.text_view_restaurant_name)
-        var item: Restaurant? = null
+        private val nameView: TextView = view.findViewById(R.id.text_view_restaurant_name)
+        private var restaurant: Restaurant? = null
 
         init {
             view.setOnClickListener {
-                item?.let {
-                    onClick(it)
+                restaurant?.id?.let {
+                    val action = ListRestaurantFragmentDirections.actionLoadRestaurantDetails(it)
+                    view.findNavController().navigate(action)
                 }
             }
         }
 
-        fun bind(item: Restaurant) {
-            nameView.text = item.name
-            this.item = item
+        fun bind(restaurant: Restaurant) {
+            nameView.text = restaurant.name
+            this.restaurant = restaurant
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.restaurant, parent, false)
-        return ViewHolder(view, onClick)
+        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getItem(position)
-        holder.bind(item)
+        val restaurant = getItem(position)
+        holder.bind(restaurant)
     }
 }
 
