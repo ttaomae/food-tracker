@@ -45,7 +45,7 @@ class FoodItemDetailFragment : Fragment(R.layout.fragment_food_item_detail) {
         }
 
         // Set add button behavior.
-        view.findViewById<Button>(R.id.button_add_food_item).setOnClickListener {
+        view.findViewById<Button>(R.id.button_save_food_item).setOnClickListener {
             saveFoodItem(view)
             val action = FoodItemDetailFragmentDirections.actionReturnToFoodItemList()
             findNavController().navigate(action)

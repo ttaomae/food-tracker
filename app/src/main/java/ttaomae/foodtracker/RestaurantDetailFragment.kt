@@ -38,7 +38,7 @@ class RestaurantDetailFragment : Fragment(R.layout.fragment_restaurant_detail) {
         }
 
         // Set add button behavior.
-        view.findViewById<Button>(R.id.button_add_restaurant).setOnClickListener {
+        view.findViewById<Button>(R.id.button_save_restaurant).setOnClickListener {
             saveRestaurant(view)
             val action = RestaurantDetailFragmentDirections.actionReturnToRestaurantList()
             findNavController().navigate(action)

@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">Food Tracker</string>
-    <string name="name_label">Name</string>
-    <string name="description_label">Description</string>
-    <string name="rating_label">Rating</string>
-    <string name="add_item_label">Add</string>
-    <string name="restaurant_name_label">Name</string>
-    <string name="add_restaurant_label">Add</string>
     <string name="view_food_items_label">View Food Items</string>
     <string name="view_restaurants_label">View Restaurants</string>
-    <string name="delete_item_label">Delete</string>
+    <string name="food_item_name_label">Name</string>
+    <string name="description_label">Description</string>
+    <string name="rating_label">Rating</string>
+    <string name="save_item_label">Save</string>
+    <string name="delete_food_item_label">Delete</string>
+    <string name="restaurant_name_label">Name</string>
+    <string name="save_restaurant_label">Save</string>
     <string name="delete_restaurant_label">Delete</string>
 </resources>

@@ -22,7 +22,6 @@
         android:layout_marginBottom="16dp"
         android:focusable="true"
         android:clickable="true"
-        android:onClick="addFoodItem"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_input_add" />
