@@ -23,19 +23,25 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ListRestaurantFragment : Fragment(R.layout.fragment_restaurant_list) {
     @Inject lateinit var restaurantRepository: RestaurantRepository
+    lateinit var restaurants: List<Restaurant>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Load restaurants from repository.
+        runBlocking {
+            launch {
+                restaurants = restaurantRepository.getAll()
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val restaurantAdapter = RestaurantAdapter()
+        restaurantAdapter.submitList(restaurants)
 
-        // Load restaurants from repository.
-        runBlocking {
-            launch {
-                val restaurants = restaurantRepository.getAll()
-                restaurantAdapter.submitList(restaurants)
-            }
-        }
 
         // Setup RecyclerView.
         view.findViewById<RecyclerView>(R.id.recycler_view_restaurants_list).apply {

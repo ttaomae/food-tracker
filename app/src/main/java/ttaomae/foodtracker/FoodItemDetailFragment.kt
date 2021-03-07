@@ -1,10 +1,13 @@
 package ttaomae.foodtracker
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RatingBar
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -13,6 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ttaomae.foodtracker.data.FoodItem
 import ttaomae.foodtracker.data.FoodItemRepository
+import ttaomae.foodtracker.databinding.FragmentFoodItemDetailBinding
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -21,8 +25,8 @@ class FoodItemDetailFragment : Fragment(R.layout.fragment_food_item_detail) {
     @Inject lateinit var foodItemRepository: FoodItemRepository
     private val args: FoodItemDetailFragmentArgs by navArgs()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         // Load item from repository.
         runBlocking {
@@ -32,6 +36,21 @@ class FoodItemDetailFragment : Fragment(R.layout.fragment_food_item_detail) {
                 }
             }
         }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val binding = DataBindingUtil.inflate<FragmentFoodItemDetailBinding>(
+            layoutInflater, R.layout.fragment_food_item_detail, container, false)
+        binding.isNew = foodItem?.id == null
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         // Update fields with values from item.
         view.findViewById<EditText>(R.id.edit_text_food_item_name).apply {

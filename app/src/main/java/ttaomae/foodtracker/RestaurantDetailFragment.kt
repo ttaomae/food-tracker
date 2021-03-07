@@ -1,9 +1,13 @@
 package ttaomae.foodtracker
 
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -12,6 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ttaomae.foodtracker.data.Restaurant
 import ttaomae.foodtracker.data.RestaurantRepository
+import ttaomae.foodtracker.databinding.FragmentRestaurantDetailBinding
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -20,8 +25,8 @@ class RestaurantDetailFragment : Fragment(R.layout.fragment_restaurant_detail) {
     @Inject lateinit var restaurantRepository: RestaurantRepository
     private val args: RestaurantDetailFragmentArgs by navArgs()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         // Load restaurant from repository
         runBlocking {
@@ -31,6 +36,23 @@ class RestaurantDetailFragment : Fragment(R.layout.fragment_restaurant_detail) {
                 }
             }
         }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        val binding = DataBindingUtil.inflate<FragmentRestaurantDetailBinding>(
+            layoutInflater, R.layout.fragment_restaurant_detail, container, false)
+        Log.d("RestaurantDetail", "${restaurant?.id}")
+        binding.isNew = restaurant?.id == null
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         // Update field with value from restaurant.
         view.findViewById<EditText>(R.id.edit_text_restaurant_name).apply {

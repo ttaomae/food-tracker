@@ -37,6 +37,9 @@ android {
     androidExtensions {
         features = ['parcelize']
     }
+    buildFeatures {
+        dataBinding true
+    }
 }
 
 dependencies {
