@@ -69,8 +69,10 @@ class FoodItemAdapter : ListAdapter<FoodItem, FoodItemAdapter.ViewHolder>(FoodIt
 
         init {
             view.setOnClickListener {
-                item?.id?.let {
-                    val action = ListFoodItemFragmentDirections.actionLoadFoodItemDetails(it)
+                item?.let {
+                    val id = it.id ?: -1
+                    val restaurantId = it.restaurantId
+                    val action = ListFoodItemFragmentDirections.actionLoadFoodItemDetails(id, restaurantId)
                     view.findNavController().navigate(action)
                 }
             }

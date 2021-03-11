@@ -25,6 +25,30 @@
 
             <TableRow
                 android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/text_view_item_restaurant_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/food_item_restaurant_label" />
+
+                <!-- andriod:inputType="none" does not seem to work, so also include
+                     android:editable even though it is deprecated. -->
+                <EditText
+                    android:id="@+id/edit_text_select_restaurant"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="no"
+                    android:ems="10"
+                    android:hint="@string/select_restaurant_hint"
+                    android:inputType="none"
+                    android:editable="false" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <TextView

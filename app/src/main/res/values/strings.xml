@@ -10,4 +10,6 @@
     <string name="restaurant_name_label">Name</string>
     <string name="save_restaurant_label">Save</string>
     <string name="delete_restaurant_label">Delete</string>
+    <string name="food_item_restaurant_label">Restaurant</string>
+    <string name="select_restaurant_hint">Select Restaurant</string>
 </resources>
