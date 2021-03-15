@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.PopupMenu
@@ -13,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -64,16 +66,16 @@ class FoodItemDetailFragment : Fragment(R.layout.fragment_food_item_detail) {
         super.onViewCreated(view, savedInstanceState)
 
         // Update fields with values from item.
-        view.findViewById<EditText>(R.id.edit_text_food_item_name).apply {
+        view.findViewById<TextInputEditText>(R.id.text_input_food_item_name).apply {
             setText(foodItem?.name)
         }
-        view.findViewById<EditText>(R.id.edit_text_food_item_description).apply {
+        view.findViewById<TextInputEditText>(R.id.text_input_food_item_description).apply {
             setText(foodItem?.description)
         }
         view.findViewById<RatingBar>(R.id.rating_bar_food_item_input).apply {
             rating = foodItem?.rating ?: 0f
         }
-        view.findViewById<EditText>(R.id.edit_text_select_restaurant).apply {
+        view.findViewById<AutoCompleteTextView>(R.id.text_input_select_restaurant).apply {
             // Set text to existing restaurant name, if it exists.
             setText(restaurant?.name)
             setOnClickListener { textInput ->
@@ -110,8 +112,8 @@ class FoodItemDetailFragment : Fragment(R.layout.fragment_food_item_detail) {
 
     private fun saveFoodItem(view: View) {
         // Get field values and create new item.
-        val nameView = view.findViewById<EditText>(R.id.edit_text_food_item_name)
-        val descriptionView = view.findViewById<EditText>(R.id.edit_text_food_item_description)
+        val nameView = view.findViewById<EditText>(R.id.text_input_food_item_name)
+        val descriptionView = view.findViewById<EditText>(R.id.text_input_food_item_description)
         val ratingView = view.findViewById<RatingBar>(R.id.rating_bar_food_item_input)
         val foodItem = FoodItem(
             foodItem?.id,

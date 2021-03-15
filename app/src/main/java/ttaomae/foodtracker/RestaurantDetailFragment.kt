@@ -1,7 +1,6 @@
 package ttaomae.foodtracker
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,10 +42,8 @@ class RestaurantDetailFragment : Fragment(R.layout.fragment_restaurant_detail) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val binding = DataBindingUtil.inflate<FragmentRestaurantDetailBinding>(
             layoutInflater, R.layout.fragment_restaurant_detail, container, false)
-        Log.d("RestaurantDetail", "${restaurant?.id}")
         binding.isNew = restaurant?.id == null
         return binding.root
     }
@@ -55,7 +52,7 @@ class RestaurantDetailFragment : Fragment(R.layout.fragment_restaurant_detail) {
         super.onViewCreated(view, savedInstanceState)
 
         // Update field with value from restaurant.
-        view.findViewById<EditText>(R.id.edit_text_restaurant_name).apply {
+        view.findViewById<EditText>(R.id.text_input_restaurant_name).apply {
             setText(restaurant?.name)
         }
 
@@ -75,7 +72,7 @@ class RestaurantDetailFragment : Fragment(R.layout.fragment_restaurant_detail) {
     }
 
     private fun saveRestaurant(view: View) {
-        val name = view.findViewById<EditText>(R.id.edit_text_restaurant_name).text.toString()
+        val name = view.findViewById<EditText>(R.id.text_input_restaurant_name).text.toString()
         val restaurant = Restaurant(restaurant?.id, name)
 
         runBlocking {

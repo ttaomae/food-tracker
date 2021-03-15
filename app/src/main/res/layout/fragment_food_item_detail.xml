@@ -6,12 +6,13 @@
         <import type="android.view.View" />
         <variable name="isNew" type="boolean" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TableLayout
-            android:id="@+id/tableLayout"
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -19,93 +20,61 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TableRow
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent"
+                android:hint="@string/select_restaurant_hint">
 
-                <TextView
-                    android:id="@+id/text_view_item_restaurant_label"
-                    android:layout_width="wrap_content"
+                <AutoCompleteTextView
+                    android:id="@+id/text_input_select_restaurant"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/food_item_restaurant_label" />
-
-                <!-- andriod:inputType="none" does not seem to work, so also include
-                     android:editable even though it is deprecated. -->
-                <EditText
-                    android:id="@+id/edit_text_select_restaurant"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:autofillHints="no"
-                    android:ems="10"
                     android:hint="@string/select_restaurant_hint"
-                    android:inputType="none"
-                    android:editable="false" />
+                    android:inputType="none" />
 
-            </TableRow>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <TableRow
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:hint="@string/food_item_name_hint">
 
-                <TextView
-                    android:id="@+id/text_view_item_name_label"
-                    android:layout_width="wrap_content"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_input_food_item_name"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/food_item_name_label" />
+                    android:inputType="textPersonName|textCapWords" />
 
-                <EditText
-                    android:id="@+id/edit_text_food_item_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/food_item_name_label"
-                    android:autofillHints="no"
-                    android:ems="10"
-                    android:inputType="textPersonName" />
-            </TableRow>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <TableRow
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:hint="@string/description_hint">
 
-                <TextView
-                    android:id="@+id/text_view_item_description_label"
-                    android:layout_width="wrap_content"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_input_food_item_description"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/description_label" />
-
-                <EditText
-                    android:id="@+id/edit_text_food_item_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/description_label"
-                    android:autofillHints="no"
-                    android:ems="10"
-                    android:gravity="start|top"
                     android:inputType="textMultiLine" />
-            </TableRow>
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:id="@+id/text_view_item_rating_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/rating_label" />
+            <RatingBar
+                android:id="@+id/rating_bar_food_item_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-                <RatingBar
-                    android:id="@+id/rating_bar_food_item_input"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </TableRow>
-
-        </TableLayout>
+        </LinearLayout>
 
         <Button
             android:id="@+id/button_save_food_item"
@@ -116,18 +85,19 @@
             android:layout_marginTop="16dp"
             android:text="@string/save_item_label"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
         <Button
             android:id="@+id/button_delete_food_item"
-            android:visibility="@{isNew ? View.GONE : View.VISIBLE}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/delete_food_item_label"
+            android:visibility="@{isNew ? View.GONE : View.VISIBLE}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_save_food_item" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
