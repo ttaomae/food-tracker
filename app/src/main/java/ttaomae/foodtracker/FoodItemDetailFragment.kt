@@ -58,26 +58,15 @@ class FoodItemDetailFragment : Fragment(R.layout.fragment_food_item_detail) {
     ): View {
         val binding = DataBindingUtil.inflate<FragmentFoodItemDetailBinding>(
             layoutInflater, R.layout.fragment_food_item_detail, container, false)
-        binding.isNew = foodItem?.id == null
+        binding.foodItem = foodItem
+        binding.restaurant = restaurant
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Update fields with values from item.
-        view.findViewById<TextInputEditText>(R.id.text_input_food_item_name).apply {
-            setText(foodItem?.name)
-        }
-        view.findViewById<TextInputEditText>(R.id.text_input_food_item_description).apply {
-            setText(foodItem?.description)
-        }
-        view.findViewById<RatingBar>(R.id.rating_bar_food_item_input).apply {
-            rating = foodItem?.rating ?: 0f
-        }
         view.findViewById<AutoCompleteTextView>(R.id.text_input_select_restaurant).apply {
-            // Set text to existing restaurant name, if it exists.
-            setText(restaurant?.name)
             setOnClickListener { textInput ->
                 val popup = PopupMenu(context, textInput)
                 // When EditText is clicked, open a popup menu with all restaurant names.

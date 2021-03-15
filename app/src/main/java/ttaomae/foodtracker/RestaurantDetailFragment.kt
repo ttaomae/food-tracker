@@ -44,17 +44,12 @@ class RestaurantDetailFragment : Fragment(R.layout.fragment_restaurant_detail) {
     ): View? {
         val binding = DataBindingUtil.inflate<FragmentRestaurantDetailBinding>(
             layoutInflater, R.layout.fragment_restaurant_detail, container, false)
-        binding.isNew = restaurant?.id == null
+        binding.restaurant = restaurant
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Update field with value from restaurant.
-        view.findViewById<EditText>(R.id.text_input_restaurant_name).apply {
-            setText(restaurant?.name)
-        }
 
         // Set add button behavior.
         view.findViewById<Button>(R.id.button_save_restaurant).setOnClickListener {

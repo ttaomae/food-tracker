@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="android.view.View" />
-        <variable name="isNew" type="boolean" />
+        <variable name="foodItem" type="ttaomae.foodtracker.data.FoodItem" />
+        <variable name="restaurant" type="ttaomae.foodtracker.data.Restaurant" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,7 +38,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/select_restaurant_hint"
-                    android:inputType="none" />
+                    android:inputType="none"
+                    android:text="@{restaurant.name}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -51,7 +53,8 @@
                     android:id="@+id/text_input_food_item_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPersonName|textCapWords" />
+                    android:inputType="textPersonName|textCapWords"
+                    android:text="@{foodItem.name}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -65,14 +68,16 @@
                     android:id="@+id/text_input_food_item_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textMultiLine" />
+                    android:inputType="textMultiLine"
+                    android:text="@{foodItem.description}"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <RatingBar
                 android:id="@+id/rating_bar_food_item_input"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:rating="@{foodItem.rating}" />
 
         </LinearLayout>
 
@@ -95,7 +100,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/delete_food_item_label"
-            android:visibility="@{isNew ? View.GONE : View.VISIBLE}"
+            android:visibility="@{foodItem.id == null ? View.GONE : View.VISIBLE}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_save_food_item" />
 

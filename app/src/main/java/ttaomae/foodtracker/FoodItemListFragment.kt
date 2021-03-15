@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RatingBar
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -19,6 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ttaomae.foodtracker.data.FoodItem
 import ttaomae.foodtracker.data.FoodItemRepository
+import ttaomae.foodtracker.databinding.FoodItemBinding
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -59,36 +58,28 @@ class ListFoodItemFragment : Fragment(R.layout.fragment_food_item_list) {
 }
 
 class FoodItemAdapter : ListAdapter<FoodItem, FoodItemAdapter.ViewHolder>(FoodItemCallback) {
-    class ViewHolder(view: View) :
-        RecyclerView.ViewHolder(view) {
-
-        private val nameView: TextView = view.findViewById(R.id.text_view_item_name)
-        private val descriptionView: TextView = view.findViewById(R.id.text_view_item_description)
-        private val ratingBar: RatingBar = view.findViewById(R.id.rating_bar_item_display)
-        private var item: FoodItem? = null
-
+    class ViewHolder(private val binding: FoodItemBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
-            view.setOnClickListener {
-                item?.let {
+            binding.root.setOnClickListener {
+                binding.foodItem?.let {
                     val id = it.id ?: -1
                     val restaurantId = it.restaurantId
                     val action = ListFoodItemFragmentDirections.actionLoadFoodItemDetails(id, restaurantId)
-                    view.findNavController().navigate(action)
+                    binding.root.findNavController().navigate(action)
                 }
             }
         }
 
         fun bind(foodItem: FoodItem) {
-            nameView.text = foodItem.name
-            descriptionView.text = foodItem.description
-            ratingBar.rating = foodItem.rating
-            this.item = foodItem
+            binding.foodItem = foodItem
+            binding.executePendingBindings()
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.food_item, parent, false)
-        return ViewHolder(view)
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = FoodItemBinding.inflate(layoutInflater, parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

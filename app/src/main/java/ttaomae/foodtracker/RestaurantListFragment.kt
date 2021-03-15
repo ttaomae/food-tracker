@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -18,6 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ttaomae.foodtracker.data.Restaurant
 import ttaomae.foodtracker.data.RestaurantRepository
+import ttaomae.foodtracker.databinding.RestaurantBinding
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -60,29 +60,26 @@ class ListRestaurantFragment : Fragment(R.layout.fragment_restaurant_list) {
 
 class RestaurantAdapter :
     ListAdapter<Restaurant, RestaurantAdapter.ViewHolder>(RestaurantCallback) {
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        private val nameView: TextView = view.findViewById(R.id.text_view_restaurant_name)
-        private var restaurant: Restaurant? = null
-
+    class ViewHolder(private val binding: RestaurantBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
-            view.setOnClickListener {
-                restaurant?.id?.let {
+            binding.root.setOnClickListener {
+                binding.restaurant?.id?.let {
                     val action = ListRestaurantFragmentDirections.actionLoadRestaurantDetails(it)
-                    view.findNavController().navigate(action)
+                    binding.root.findNavController().navigate(action)
                 }
             }
         }
 
         fun bind(restaurant: Restaurant) {
-            nameView.text = restaurant.name
-            this.restaurant = restaurant
+            binding.restaurant = restaurant
+            binding.executePendingBindings()
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.restaurant, parent, false)
-        return ViewHolder(view)
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = RestaurantBinding.inflate(layoutInflater, parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

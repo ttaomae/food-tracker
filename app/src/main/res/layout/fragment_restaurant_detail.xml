@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="android.view.View" />
-        <variable name="isNew" type="boolean" />
+        <import type="ttaomae.foodtracker.data.Restaurant" />
+        <variable name="restaurant" type="Restaurant" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -29,7 +30,8 @@
                 android:id="@+id/text_input_restaurant_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName|textCapWords" />
+                android:inputType="textPersonName|textCapWords"
+                android:text="@{restaurant.name}"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
@@ -45,7 +47,7 @@
 
         <Button
             android:id="@+id/button_delete_restaurant"
-            android:visibility="@{isNew ? View.GONE : View.VISIBLE}"
+            android:visibility="@{restaurant.id == null ? View.GONE : View.VISIBLE}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
