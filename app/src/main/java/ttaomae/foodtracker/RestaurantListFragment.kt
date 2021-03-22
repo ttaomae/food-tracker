@@ -42,7 +42,6 @@ class ListRestaurantFragment : Fragment(R.layout.fragment_restaurant_list) {
         val restaurantAdapter = RestaurantAdapter()
         restaurantAdapter.submitList(restaurants)
 
-
         // Setup RecyclerView.
         view.findViewById<RecyclerView>(R.id.recycler_view_restaurants_list).apply {
             setHasFixedSize(true)

@@ -23,6 +23,7 @@ interface RestaurantRepository {
     suspend fun get(id: Long): Restaurant?
     suspend fun getAll(): List<Restaurant>
     suspend fun getWithFoodItems(id: Long): RestaurantWithFoodItems
+    suspend fun getAllWithFoodItems(): List<RestaurantWithFoodItems>
     suspend fun save(restuarant: Restaurant)
     suspend fun delete(restuarant: Restaurant)
 }
@@ -33,7 +34,9 @@ class RestaurantDaoRepository @Inject constructor(private val restaurantDao: Res
     override suspend fun get(id: Long): Restaurant? = restaurantDao.findById(id)
     override suspend fun getAll(): List<Restaurant> = restaurantDao.findAll()
     override suspend fun getWithFoodItems(id: Long): RestaurantWithFoodItems =
-        restaurantDao.findFoodItems(id)
+        restaurantDao.findWithFoodItems(id)
+    override suspend fun getAllWithFoodItems(): List<RestaurantWithFoodItems> =
+        restaurantDao.findAllWithFoodItems()
     override suspend fun save(restuarant: Restaurant) = restaurantDao.insert(restuarant)
     override suspend fun delete(restuarant: Restaurant) = restaurantDao.delete(restuarant)
 }

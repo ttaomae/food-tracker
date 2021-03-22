@@ -38,4 +38,18 @@ data class RestaurantWithFoodItems(
         entityColumn = "restaurantId"
     )
     val foodItems: List<FoodItem>
-)
+) {
+    fun asFoodItemList(): List<FoodItemWithRestaurant> {
+        return foodItems.map { FoodItemWithRestaurant(it, restaurant) }
+    }
+}
+
+data class FoodItemWithRestaurant(
+    val foodItem: FoodItem,
+    val restaurant: Restaurant,
+) {
+    val id = foodItem.id
+    val name = foodItem.name
+    val description = foodItem.description
+    val rating = foodItem.rating
+}

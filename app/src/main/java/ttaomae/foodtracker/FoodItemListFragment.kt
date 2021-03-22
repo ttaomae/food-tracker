@@ -17,13 +17,17 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ttaomae.foodtracker.data.FoodItem
 import ttaomae.foodtracker.data.FoodItemRepository
+import ttaomae.foodtracker.data.FoodItemWithRestaurant
+import ttaomae.foodtracker.data.Restaurant
+import ttaomae.foodtracker.data.RestaurantRepository
 import ttaomae.foodtracker.databinding.FoodItemBinding
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class ListFoodItemFragment : Fragment(R.layout.fragment_food_item_list) {
     @Inject lateinit var foodItemRepository: FoodItemRepository
-    lateinit var foodItems: List<FoodItem>
+    @Inject lateinit var restaurantRepository: RestaurantRepository
+    lateinit var foodItems: List<FoodItemWithRestaurant>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +35,8 @@ class ListFoodItemFragment : Fragment(R.layout.fragment_food_item_list) {
         // Load items from repository.
         runBlocking {
             launch {
-                foodItems  = foodItemRepository.getAll()
+                foodItems =
+                    restaurantRepository.getAllWithFoodItems().flatMap { it.asFoodItemList() }
             }
         }
     }
@@ -57,20 +62,22 @@ class ListFoodItemFragment : Fragment(R.layout.fragment_food_item_list) {
     }
 }
 
-class FoodItemAdapter : ListAdapter<FoodItem, FoodItemAdapter.ViewHolder>(FoodItemCallback) {
+class FoodItemAdapter :
+    ListAdapter<FoodItemWithRestaurant, FoodItemAdapter.ViewHolder>(FoodItemCallback) {
     class ViewHolder(private val binding: FoodItemBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
                 binding.foodItem?.let {
                     val id = it.id ?: -1
-                    val restaurantId = it.restaurantId
-                    val action = ListFoodItemFragmentDirections.actionLoadFoodItemDetails(id, restaurantId)
+                    val restaurantId = it.restaurant.id ?: -1
+                    val action =
+                        ListFoodItemFragmentDirections.actionLoadFoodItemDetails(id, restaurantId)
                     binding.root.findNavController().navigate(action)
                 }
             }
         }
 
-        fun bind(foodItem: FoodItem) {
+        fun bind(foodItem: FoodItemWithRestaurant) {
             binding.foodItem = foodItem
             binding.executePendingBindings()
         }
@@ -88,14 +95,21 @@ class FoodItemAdapter : ListAdapter<FoodItem, FoodItemAdapter.ViewHolder>(FoodIt
     }
 }
 
-object FoodItemCallback : DiffUtil.ItemCallback<FoodItem>() {
-    override fun areItemsTheSame(oldItem: FoodItem, newItem: FoodItem): Boolean {
+object FoodItemCallback : DiffUtil.ItemCallback<FoodItemWithRestaurant>() {
+    override fun areItemsTheSame(
+        oldItem: FoodItemWithRestaurant,
+        newItem: FoodItemWithRestaurant
+    ): Boolean {
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: FoodItem, newItem: FoodItem): Boolean {
-        return oldItem.name == newItem.name
+    override fun areContentsTheSame(
+        oldItem: FoodItemWithRestaurant,
+        newItem: FoodItemWithRestaurant
+    ): Boolean {
+        return oldItem.foodItem.name == newItem.name
                 && oldItem.description == newItem.description
                 && oldItem.rating == newItem.rating
+                && oldItem.restaurant.name == newItem.restaurant.name
     }
 }

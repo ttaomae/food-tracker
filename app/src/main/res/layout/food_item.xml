@@ -1,52 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="android.view.View" />
-        <import type="ttaomae.foodtracker.data.FoodItem" />
-        <variable name="foodItem" type="FoodItem" />
+        <import type="ttaomae.foodtracker.data.FoodItemWithRestaurant" />
+        <variable name="foodItem" type="FoodItemWithRestaurant" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
 
         <TextView
             android:id="@+id/text_view_item_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:textSize="24sp"
+            android:text="@{foodItem.foodItem.name}"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="@{foodItem.name}" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_view_item_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:textSize="18sp"
+            android:layout_marginTop="4dp"
+            android:text="@{foodItem.restaurant.name}"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_item_name"
-            android:visibility="@{foodItem.description.empty ? View.GONE : View.VISIBLE}"
-            android:text="@{foodItem.description}" />
+            app:layout_constraintTop_toBottomOf="@+id/text_view_item_name" />
 
         <RatingBar
             android:id="@+id/rating_bar_item_display"
+            style="@style/Widget.AppCompat.RatingBar.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="4dp"
             android:isIndicator="true"
+            android:rating="@{foodItem.foodItem.rating}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_item_description"
-            android:rating="@{foodItem.rating}" />
+            app:layout_constraintTop_toBottomOf="@+id/text_view_item_description" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
