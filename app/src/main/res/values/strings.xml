@@ -12,4 +12,7 @@
     <string name="delete_restaurant_label">Delete</string>
     <string name="food_item_restaurant_label">Restaurant</string>
     <string name="select_restaurant_hint">Select Restaurant</string>
+    <string name="edit_restaurant_label">Edit</string>
+    <string name="edit_item_label">Edit</string>
+    <string name="no_description_label">No description</string>
 </resources>

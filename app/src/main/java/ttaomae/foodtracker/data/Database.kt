@@ -29,7 +29,7 @@ interface FoodItemDao {
     suspend fun findAll(): List<FoodItem>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(foodItem: FoodItem)
+    suspend fun insert(foodItem: FoodItem): Long
 
     @Delete
     suspend fun delete(foodItem: FoodItem)
@@ -52,7 +52,7 @@ interface RestaurantDao {
     suspend fun findAllWithFoodItems(): List<RestaurantWithFoodItems>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(restaurant: Restaurant)
+    suspend fun insert(restaurant: Restaurant): Long
 
     @Delete
     suspend fun delete(restaurant: Restaurant)

@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ttaomae.foodtracker.data.Restaurant
 import ttaomae.foodtracker.data.RestaurantRepository
-import ttaomae.foodtracker.databinding.RestaurantBinding
+import ttaomae.foodtracker.databinding.RestaurantSummaryBinding
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -51,7 +51,7 @@ class ListRestaurantFragment : Fragment(R.layout.fragment_restaurant_list) {
 
         // Set add button behavior.
         view.findViewById<FloatingActionButton>(R.id.fab_add_restaurant).setOnClickListener {
-            val action = ListRestaurantFragmentDirections.actionLoadRestaurantDetails()
+            val action = ListRestaurantFragmentDirections.actionAddRestaurant()
             findNavController().navigate(action)
         }
     }
@@ -59,10 +59,11 @@ class ListRestaurantFragment : Fragment(R.layout.fragment_restaurant_list) {
 
 class RestaurantAdapter :
     ListAdapter<Restaurant, RestaurantAdapter.ViewHolder>(RestaurantCallback) {
-    class ViewHolder(private val binding: RestaurantBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: RestaurantSummaryBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                binding.restaurant?.id?.let {
+                binding.restaurant?.let {
                     val action = ListRestaurantFragmentDirections.actionLoadRestaurantDetails(it)
                     binding.root.findNavController().navigate(action)
                 }
@@ -77,7 +78,7 @@ class RestaurantAdapter :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = RestaurantBinding.inflate(layoutInflater, parent, false)
+        val binding = RestaurantSummaryBinding.inflate(layoutInflater, parent, false)
         return ViewHolder(binding)
     }
 

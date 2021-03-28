@@ -15,14 +15,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import ttaomae.foodtracker.data.Restaurant
 import ttaomae.foodtracker.data.RestaurantRepository
-import ttaomae.foodtracker.databinding.FragmentRestaurantDetailBinding
+import ttaomae.foodtracker.databinding.FragmentRestaurantEditBinding
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class RestaurantDetailFragment : Fragment(R.layout.fragment_restaurant_detail) {
+class RestaurantEditFragment : Fragment(R.layout.fragment_restaurant_edit) {
     @Inject lateinit var restaurantRepository: RestaurantRepository
-    private val args: RestaurantDetailFragmentArgs by navArgs()
-    private lateinit var restaurant: Restaurant
+    private val args: RestaurantEditFragmentArgs by navArgs()
+    private var restaurant: Restaurant? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +34,8 @@ class RestaurantDetailFragment : Fragment(R.layout.fragment_restaurant_detail) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = DataBindingUtil.inflate<FragmentRestaurantDetailBinding>(
-            layoutInflater, R.layout.fragment_restaurant_detail, container, false
+        val binding = DataBindingUtil.inflate<FragmentRestaurantEditBinding>(
+            layoutInflater, R.layout.fragment_restaurant_edit, container, false
         )
         binding.restaurant = restaurant
         return binding.root
@@ -44,38 +44,26 @@ class RestaurantDetailFragment : Fragment(R.layout.fragment_restaurant_detail) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set edit button behavior.
-        view.findViewById<Button>(R.id.button_edit_restaurant).setOnClickListener {
-            val action = RestaurantDetailFragmentDirections.actionEditRestaurant(restaurant)
-            findNavController().navigate(action)
-        }
-
-        // Set delete button behavior.
-        view.findViewById<Button>(R.id.button_delete_restaurant).setOnClickListener {
-            deleteRestaurant()
-            val action = RestaurantDetailFragmentDirections.actionReturnToRestaurantList()
+        // Set save button behavior.
+        view.findViewById<Button>(R.id.button_save_restaurant).setOnClickListener {
+            val savedRestaurant = saveRestaurant(view)
+            val action =
+                RestaurantEditFragmentDirections.actionReturnToRestaurantDetail(savedRestaurant)
             findNavController().navigate(action)
         }
     }
 
-    private fun saveRestaurant(view: View) {
+    private fun saveRestaurant(view: View): Restaurant {
         val name = view.findViewById<EditText>(R.id.text_input_restaurant_name).text.toString()
-        val restaurant = Restaurant(restaurant.id, name)
+        val restaurant = Restaurant(restaurant?.id, name)
 
+        var restaurantId: Long? = null
         runBlocking {
             launch {
-                restaurantRepository.save(restaurant)
+                restaurantId = restaurantRepository.save(restaurant)
             }
         }
-    }
 
-    private fun deleteRestaurant() {
-        restaurant.let {
-            runBlocking {
-                launch {
-                    restaurantRepository.delete(it)
-                }
-            }
-        }
+        return Restaurant(restaurantId!!, name)
     }
 }

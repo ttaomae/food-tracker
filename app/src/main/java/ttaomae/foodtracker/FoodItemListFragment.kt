@@ -15,12 +15,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import ttaomae.foodtracker.data.FoodItem
 import ttaomae.foodtracker.data.FoodItemRepository
 import ttaomae.foodtracker.data.FoodItemWithRestaurant
-import ttaomae.foodtracker.data.Restaurant
 import ttaomae.foodtracker.data.RestaurantRepository
-import ttaomae.foodtracker.databinding.FoodItemBinding
+import ttaomae.foodtracker.databinding.FoodItemSummaryBinding
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -56,7 +54,7 @@ class ListFoodItemFragment : Fragment(R.layout.fragment_food_item_list) {
 
         // Set add button behavior.
         view.findViewById<FloatingActionButton>(R.id.fab_add_item).setOnClickListener {
-            val action = ListFoodItemFragmentDirections.actionLoadFoodItemDetails()
+            val action = ListFoodItemFragmentDirections.actionAddFoodItem()
             findNavController().navigate(action)
         }
     }
@@ -64,14 +62,12 @@ class ListFoodItemFragment : Fragment(R.layout.fragment_food_item_list) {
 
 class FoodItemAdapter :
     ListAdapter<FoodItemWithRestaurant, FoodItemAdapter.ViewHolder>(FoodItemCallback) {
-    class ViewHolder(private val binding: FoodItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: FoodItemSummaryBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
                 binding.foodItem?.let {
-                    val id = it.id ?: -1
-                    val restaurantId = it.restaurant.id ?: -1
-                    val action =
-                        ListFoodItemFragmentDirections.actionLoadFoodItemDetails(id, restaurantId)
+                    val action = ListFoodItemFragmentDirections.actionLoadFoodItemDetails(it)
                     binding.root.findNavController().navigate(action)
                 }
             }
@@ -85,7 +81,7 @@ class FoodItemAdapter :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = FoodItemBinding.inflate(layoutInflater, parent, false)
+        val binding = FoodItemSummaryBinding.inflate(layoutInflater, parent, false)
         return ViewHolder(binding)
     }
 

@@ -1,95 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="android.view.View" />
-        <variable name="foodItem" type="ttaomae.foodtracker.data.FoodItem" />
-        <variable name="restaurant" type="ttaomae.foodtracker.data.Restaurant" />
+        <variable name="foodItem" type="ttaomae.foodtracker.data.FoodItemWithRestaurant" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
+
+        <TextView
+            android:id="@+id/text_view_food_item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:orientation="vertical"
+            android:text="@{foodItem.name}"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/text_view_restaurant_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="4dp"
+            android:inputType="none"
+            android:text="@{foodItem.restaurant.name}"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_food_item_name" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/text_input_select_restaurant"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/select_restaurant_hint"
-                    android:inputType="none"
-                    android:text="@{restaurant.name}" />
+        <TextView
+            android:id="@+id/text_view_food_item_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="4dp"
+            android:text="@{foodItem.description}"
+            android:hint="@string/no_description_label"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_restaurant_name" />
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/food_item_name_hint">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/text_input_food_item_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName|textCapWords"
-                    android:text="@{foodItem.name}" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/description_hint">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/text_input_food_item_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                    android:text="@{foodItem.description}"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <RatingBar
-                android:id="@+id/rating_bar_food_item_input"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:rating="@{foodItem.rating}" />
-
-        </LinearLayout>
+        <RatingBar
+            android:id="@+id/rating_bar_food_item"
+            style="@style/Widget.AppCompat.RatingBar.Indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="4dp"
+            android:rating="@{foodItem.rating}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_food_item_description" />
 
         <Button
-            android:id="@+id/button_save_food_item"
+            android:id="@+id/button_edit_food_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
-            android:text="@string/save_item_label"
+            android:text="@string/edit_item_label"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/rating_bar_food_item" />
 
         <Button
             android:id="@+id/button_delete_food_item"
@@ -97,11 +80,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="4dp"
             android:text="@string/delete_food_item_label"
-            android:visibility="@{foodItem.id == null ? View.GONE : View.VISIBLE}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_save_food_item" />
+            app:layout_constraintTop_toBottomOf="@+id/button_edit_food_item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

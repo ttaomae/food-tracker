@@ -2,53 +2,30 @@ package ttaomae.foodtracker
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AutoCompleteTextView
 import android.widget.Button
-import android.widget.EditText
-import android.widget.PopupMenu
-import android.widget.RatingBar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import ttaomae.foodtracker.data.FoodItem
 import ttaomae.foodtracker.data.FoodItemRepository
-import ttaomae.foodtracker.data.Restaurant
-import ttaomae.foodtracker.data.RestaurantRepository
+import ttaomae.foodtracker.data.FoodItemWithRestaurant
 import ttaomae.foodtracker.databinding.FragmentFoodItemDetailBinding
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class FoodItemDetailFragment : Fragment(R.layout.fragment_food_item_detail) {
-    private var foodItem: FoodItem? = null
-    private var restaurant: Restaurant? = null
-    private lateinit var restaurants: List<Restaurant>
     @Inject lateinit var foodItemRepository: FoodItemRepository
-    @Inject lateinit var restaurantRepository: RestaurantRepository
     private val args: FoodItemDetailFragmentArgs by navArgs()
+    private lateinit var foodItem: FoodItemWithRestaurant
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Load item from repository.
-        runBlocking {
-            launch {
-                if (args.itemId != -1L) {
-                    foodItem = foodItemRepository.get(args.itemId)
-                }
-                if (args.restaurantId != -1L) {
-                    restaurant = restaurantRepository.get(args.restaurantId)
-                }
-                restaurants = restaurantRepository.getAll()
-            }
-        }
+        foodItem = args.foodItem
     }
 
     override fun onCreateView(
@@ -57,37 +34,18 @@ class FoodItemDetailFragment : Fragment(R.layout.fragment_food_item_detail) {
         savedInstanceState: Bundle?
     ): View {
         val binding = DataBindingUtil.inflate<FragmentFoodItemDetailBinding>(
-            layoutInflater, R.layout.fragment_food_item_detail, container, false)
+            layoutInflater, R.layout.fragment_food_item_detail, container, false
+        )
         binding.foodItem = foodItem
-        binding.restaurant = restaurant
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<AutoCompleteTextView>(R.id.text_input_select_restaurant).apply {
-            setOnClickListener { textInput ->
-                val popup = PopupMenu(context, textInput)
-                // When EditText is clicked, open a popup menu with all restaurant names.
-                restaurants.forEachIndexed { index, restaurant ->
-                    popup.menu.add(Menu.NONE, Menu.NONE, index, restaurant.name)
-                }
-
-                // When a popup menu item is clicked, set EditText value and update restaurant.
-                popup.setOnMenuItemClickListener { menuItem ->
-                    this.setText(menuItem.title)
-                    restaurant = restaurants[menuItem.order]
-                    true
-                }
-                popup.show()
-            }
-        }
-
-        // Set add button behavior.
-        view.findViewById<Button>(R.id.button_save_food_item).setOnClickListener {
-            saveFoodItem(view)
-            val action = FoodItemDetailFragmentDirections.actionReturnToFoodItemList()
+        // Set edit button behavior.
+        view.findViewById<Button>(R.id.button_edit_food_item).setOnClickListener {
+            val action = FoodItemDetailFragmentDirections.actionEditFoodItem(foodItem)
             findNavController().navigate(action)
         }
 
@@ -99,29 +57,9 @@ class FoodItemDetailFragment : Fragment(R.layout.fragment_food_item_detail) {
         }
     }
 
-    private fun saveFoodItem(view: View) {
-        // Get field values and create new item.
-        val nameView = view.findViewById<EditText>(R.id.text_input_food_item_name)
-        val descriptionView = view.findViewById<EditText>(R.id.text_input_food_item_description)
-        val ratingView = view.findViewById<RatingBar>(R.id.rating_bar_food_item_input)
-        val foodItem = FoodItem(
-            foodItem?.id,
-            restaurant?.id ?: -1L,
-            nameView.text.toString(),
-            descriptionView.text.toString(),
-            ratingView.rating
-        )
-
-        // Save to repository.
-        runBlocking {
-            launch {
-                foodItemRepository.save(foodItem)
-            }
-        }
-    }
 
     private fun deleteFoodItem() {
-        foodItem?.let {
+        foodItem.foodItem.let {
             runBlocking {
                 launch {
                     foodItemRepository.delete(it)

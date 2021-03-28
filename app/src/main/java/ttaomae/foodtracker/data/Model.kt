@@ -20,16 +20,23 @@ import kotlinx.android.parcel.Parcelize
     ]
 )
 data class FoodItem(
-    @PrimaryKey val id: Long?,
+    @PrimaryKey(autoGenerate = true)
+    val id: Long,
     val restaurantId: Long,
     val name: String,
     val description: String,
     val rating: Float
-) : Parcelable
+) : Parcelable {
+    constructor(id: Long?, restaurantId: Long?, name: String, description: String, rating: Float) :
+            this(id ?: 0L, restaurantId ?: 0L, name, description, rating)
+}
 
 @Parcelize
 @Entity(tableName = "restaurant")
-data class Restaurant(@PrimaryKey val id: Long?, val name: String)
+data class Restaurant(@PrimaryKey(autoGenerate = true) val id: Long, val name: String) :
+    Parcelable {
+    constructor(id: Long?, name: String) : this(id ?: 0L, name)
+}
 
 data class RestaurantWithFoodItems(
     @Embedded val restaurant: Restaurant,
@@ -44,10 +51,11 @@ data class RestaurantWithFoodItems(
     }
 }
 
+@Parcelize
 data class FoodItemWithRestaurant(
     val foodItem: FoodItem,
     val restaurant: Restaurant,
-) {
+) : Parcelable {
     val id = foodItem.id
     val name = foodItem.name
     val description = foodItem.description
