@@ -79,7 +79,8 @@
         <action
             android:id="@+id/action_returnToRestaurantDetail"
             app:destination="@id/restaurantDetailFragment"
-            app:popUpTo="@id/restaurantListFragment" />
+            app:popUpTo="@id/restaurantListFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment android:id="@+id/foodItemEditFragment"
         android:name="ttaomae.foodtracker.FoodItemEditFragment" >
@@ -90,6 +91,8 @@
             app:nullable="true" />
         <action
             android:id="@+id/action_returnToFoodItemDetail"
-            app:destination="@id/foodItemDetailFragment" />
+            app:destination="@id/foodItemDetailFragment"
+            app:popUpTo="@id/itemListFragment"
+            app:popUpToInclusive="false" />
     </fragment>
 </navigation>
