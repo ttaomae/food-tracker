@@ -6,7 +6,8 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.Relation
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @Entity(
@@ -56,8 +57,8 @@ data class FoodItemWithRestaurant(
     val foodItem: FoodItem,
     val restaurant: Restaurant,
 ) : Parcelable {
-    val id = foodItem.id
-    val name = foodItem.name
-    val description = foodItem.description
-    val rating = foodItem.rating
+    @IgnoredOnParcel val id = foodItem.id
+    @IgnoredOnParcel val name = foodItem.name
+    @IgnoredOnParcel val description = foodItem.description
+    @IgnoredOnParcel val rating = foodItem.rating
 }
