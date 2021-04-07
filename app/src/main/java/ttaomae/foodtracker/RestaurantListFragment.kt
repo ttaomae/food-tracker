@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -13,34 +14,21 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import ttaomae.foodtracker.data.Restaurant
-import ttaomae.foodtracker.data.RestaurantRepository
 import ttaomae.foodtracker.databinding.RestaurantSummaryBinding
-import javax.inject.Inject
+import ttaomae.foodtracker.viewmodel.RestaurantListViewModel
 
 @AndroidEntryPoint
 class ListRestaurantFragment : Fragment(R.layout.fragment_restaurant_list) {
-    @Inject lateinit var restaurantRepository: RestaurantRepository
-    lateinit var restaurants: List<Restaurant>
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // Load restaurants from repository.
-        runBlocking {
-            launch {
-                restaurants = restaurantRepository.getAll()
-            }
-        }
-    }
+    private val viewModel: RestaurantListViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val restaurantAdapter = RestaurantAdapter()
-        restaurantAdapter.submitList(restaurants)
+        viewModel.restaurants.observe(viewLifecycleOwner) { result ->
+            restaurantAdapter.submitList(result)
+        }
 
         // Setup RecyclerView.
         view.findViewById<RecyclerView>(R.id.recycler_view_restaurants_list).apply {

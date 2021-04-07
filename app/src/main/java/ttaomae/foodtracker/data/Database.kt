@@ -1,7 +1,16 @@
 package ttaomae.foodtracker.data
 
 import android.content.Context
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Database
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.Transaction
+import kotlinx.coroutines.flow.Flow
 
 @Database(entities = [FoodItem::class, Restaurant::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
@@ -41,7 +50,7 @@ interface RestaurantDao {
     suspend fun findById(id: Long): Restaurant?
 
     @Query("SELECT * FROM restaurant")
-    suspend fun findAll(): List<Restaurant>
+    fun findAll(): Flow<List<Restaurant>>
 
     @Transaction
     @Query("SELECT * FROM restaurant WHERE id = :id")
@@ -49,7 +58,7 @@ interface RestaurantDao {
 
     @Transaction
     @Query("SELECT * FROM restaurant")
-    suspend fun findAllWithFoodItems(): List<RestaurantWithFoodItems>
+    fun findAllWithFoodItems(): Flow<List<RestaurantWithFoodItems>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(restaurant: Restaurant): Long

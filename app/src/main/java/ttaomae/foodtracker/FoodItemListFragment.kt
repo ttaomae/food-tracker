@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -13,37 +14,21 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import ttaomae.foodtracker.data.FoodItemRepository
 import ttaomae.foodtracker.data.FoodItemWithRestaurant
-import ttaomae.foodtracker.data.RestaurantRepository
 import ttaomae.foodtracker.databinding.FoodItemSummaryBinding
-import javax.inject.Inject
+import ttaomae.foodtracker.viewmodel.FoodItemListViewModel
 
 @AndroidEntryPoint
 class ListFoodItemFragment : Fragment(R.layout.fragment_food_item_list) {
-    @Inject lateinit var foodItemRepository: FoodItemRepository
-    @Inject lateinit var restaurantRepository: RestaurantRepository
-    lateinit var foodItems: List<FoodItemWithRestaurant>
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // Load items from repository.
-        runBlocking {
-            launch {
-                foodItems =
-                    restaurantRepository.getAllWithFoodItems().flatMap { it.asFoodItemList() }
-            }
-        }
-    }
+    private val viewModel: FoodItemListViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val foodItemAdapter = FoodItemAdapter()
-        foodItemAdapter.submitList(foodItems)
+        viewModel.foodItems.observe(viewLifecycleOwner) { result ->
+            foodItemAdapter.submitList(result)
+        }
 
         // Setup RecyclerView
         view.findViewById<RecyclerView>(R.id.recycler_view_items_list).apply {

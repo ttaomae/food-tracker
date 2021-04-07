@@ -1,5 +1,6 @@
 package ttaomae.foodtracker.data
 
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -21,9 +22,9 @@ class FoodItemDaoRepository @Inject constructor(private val foodItemDao: FoodIte
 
 interface RestaurantRepository {
     suspend fun get(id: Long): Restaurant?
-    suspend fun getAll(): List<Restaurant>
+    fun getAll(): Flow<List<Restaurant>>
     suspend fun getWithFoodItems(id: Long): RestaurantWithFoodItems
-    suspend fun getAllWithFoodItems(): List<RestaurantWithFoodItems>
+    fun getAllWithFoodItems(): Flow<List<RestaurantWithFoodItems>>
     suspend fun save(restuarant: Restaurant): Long
     suspend fun delete(restuarant: Restaurant)
 }
@@ -32,10 +33,10 @@ interface RestaurantRepository {
 class RestaurantDaoRepository @Inject constructor(private val restaurantDao: RestaurantDao) :
     RestaurantRepository {
     override suspend fun get(id: Long): Restaurant? = restaurantDao.findById(id)
-    override suspend fun getAll(): List<Restaurant> = restaurantDao.findAll()
+    override fun getAll() = restaurantDao.findAll()
     override suspend fun getWithFoodItems(id: Long): RestaurantWithFoodItems =
         restaurantDao.findWithFoodItems(id)
-    override suspend fun getAllWithFoodItems(): List<RestaurantWithFoodItems> =
+    override fun getAllWithFoodItems(): Flow<List<RestaurantWithFoodItems>> =
         restaurantDao.findAllWithFoodItems()
     override suspend fun save(restuarant: Restaurant): Long = restaurantDao.insert(restuarant)
     override suspend fun delete(restuarant: Restaurant) = restaurantDao.delete(restuarant)
