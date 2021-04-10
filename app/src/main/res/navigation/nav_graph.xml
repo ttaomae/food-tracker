@@ -6,7 +6,7 @@
     <fragment
         android:id="@+id/mainMenuFragment"
         android:name="ttaomae.foodtracker.MainMenuFragment"
-        android:label="MainMenuFragment" >
+        android:label="Food Tracker">
         <action
             android:id="@+id/action_loadRestaurantList"
             app:destination="@id/restaurantListFragment" />
@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/itemListFragment"
         android:name="ttaomae.foodtracker.ListFoodItemFragment"
-        android:label="ItemListFragment" >
+        android:label="Food">
         <action
             android:id="@+id/action_loadFoodItemDetails"
             app:destination="@id/foodItemDetailFragment" />
@@ -28,7 +28,7 @@
     <fragment
         android:id="@+id/restaurantListFragment"
         android:name="ttaomae.foodtracker.ListRestaurantFragment"
-        android:label="RestaurantListFragment" >
+        android:label="Restaurants">
         <action
             android:id="@+id/action_loadRestaurantDetails"
             app:destination="@id/restaurantDetailFragment" />
@@ -39,7 +39,7 @@
     <fragment
         android:id="@+id/foodItemDetailFragment"
         android:name="ttaomae.foodtracker.FoodItemDetailFragment"
-        android:label="FoodItemDetailFragment">
+        android:label="Detail">
         <action
             android:id="@+id/action_returnToFoodItemList"
             app:destination="@id/itemListFragment"
@@ -55,7 +55,7 @@
     <fragment
         android:id="@+id/restaurantDetailFragment"
         android:name="ttaomae.foodtracker.RestaurantDetailFragment"
-        android:label="RestaurantDetailFragment" >
+        android:label="Detail">
         <action
             android:id="@+id/action_returnToRestaurantList"
             app:destination="@id/restaurantListFragment"
@@ -70,20 +70,23 @@
     </fragment>
     <fragment
         android:id="@+id/restaurantEditFragment"
-        android:name="ttaomae.foodtracker.RestaurantEditFragment" >
+        android:name="ttaomae.foodtracker.RestaurantEditFragment"
+        android:label="Edit">
         <argument
             android:name="restaurant"
+            android:defaultValue="@null"
             app:argType="ttaomae.foodtracker.data.Restaurant"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
         <action
             android:id="@+id/action_returnToRestaurantDetail"
             app:destination="@id/restaurantDetailFragment"
             app:popUpTo="@id/restaurantListFragment"
             app:popUpToInclusive="false" />
     </fragment>
-    <fragment android:id="@+id/foodItemEditFragment"
-        android:name="ttaomae.foodtracker.FoodItemEditFragment" >
+    <fragment
+        android:id="@+id/foodItemEditFragment"
+        android:name="ttaomae.foodtracker.FoodItemEditFragment"
+        android:label="Edit">
         <argument
             android:name="foodItem"
             android:defaultValue="@null"
