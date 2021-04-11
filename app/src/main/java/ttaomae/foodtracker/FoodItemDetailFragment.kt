@@ -2,9 +2,11 @@ package ttaomae.foodtracker
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -26,6 +28,7 @@ class FoodItemDetailFragment : Fragment(R.layout.fragment_food_item_detail) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         foodItem = args.foodItem
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -40,23 +43,26 @@ class FoodItemDetailFragment : Fragment(R.layout.fragment_food_item_detail) {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        // Set edit button behavior.
-        view.findViewById<Button>(R.id.button_edit_food_item).setOnClickListener {
-            val action = FoodItemDetailFragmentDirections.actionEditFoodItem(foodItem)
-            findNavController().navigate(action)
-        }
-
-        // Set delete button behavior.
-        view.findViewById<Button>(R.id.button_delete_food_item).setOnClickListener {
-            deleteFoodItem()
-            val action = FoodItemDetailFragmentDirections.actionReturnToFoodItemList()
-            findNavController().navigate(action)
-        }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_detail, menu)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_item_edit -> {
+                val action = FoodItemDetailFragmentDirections.actionEditFoodItem(foodItem)
+                findNavController().navigate(action)
+                true
+            }
+            R.id.menu_item_delete -> {
+                deleteFoodItem()
+                val action = FoodItemDetailFragmentDirections.actionReturnToFoodItemList()
+                findNavController().navigate(action)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 
     private fun deleteFoodItem() {
         foodItem.foodItem.let {

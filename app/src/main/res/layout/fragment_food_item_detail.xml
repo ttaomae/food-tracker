@@ -62,28 +62,5 @@
             android:rating="@{foodItem.rating}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_view_food_item_description" />
-
-        <Button
-            android:id="@+id/button_edit_food_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/edit_item_label"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rating_bar_food_item" />
-
-        <Button
-            android:id="@+id/button_delete_food_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="4dp"
-            android:text="@string/delete_food_item_label"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_edit_food_item" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

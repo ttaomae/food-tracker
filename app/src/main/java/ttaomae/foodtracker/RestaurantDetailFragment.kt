@@ -2,10 +2,11 @@ package ttaomae.foodtracker
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -27,6 +28,7 @@ class RestaurantDetailFragment : Fragment(R.layout.fragment_restaurant_detail) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         restaurant = args.restaurant
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -41,31 +43,24 @@ class RestaurantDetailFragment : Fragment(R.layout.fragment_restaurant_detail) {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        // Set edit button behavior.
-        view.findViewById<Button>(R.id.button_edit_restaurant).setOnClickListener {
-            val action = RestaurantDetailFragmentDirections.actionEditRestaurant(restaurant)
-            findNavController().navigate(action)
-        }
-
-        // Set delete button behavior.
-        view.findViewById<Button>(R.id.button_delete_restaurant).setOnClickListener {
-            deleteRestaurant()
-            val action = RestaurantDetailFragmentDirections.actionReturnToRestaurantList()
-            findNavController().navigate(action)
-        }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_detail, menu)
     }
 
-    private fun saveRestaurant(view: View) {
-        val name = view.findViewById<EditText>(R.id.text_input_restaurant_name).text.toString()
-        val restaurant = Restaurant(restaurant.id, name)
-
-        runBlocking {
-            launch {
-                restaurantRepository.save(restaurant)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_item_edit -> {
+                val action = RestaurantDetailFragmentDirections.actionEditRestaurant(restaurant)
+                findNavController().navigate(action)
+                true
             }
+            R.id.menu_item_delete -> {
+                deleteRestaurant()
+                val action = RestaurantDetailFragmentDirections.actionReturnToRestaurantList()
+                findNavController().navigate(action)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

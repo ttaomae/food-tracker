@@ -3,10 +3,11 @@ package ttaomae.foodtracker
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AutoCompleteTextView
-import android.widget.Button
 import android.widget.EditText
 import android.widget.PopupMenu
 import android.widget.RatingBar
@@ -38,6 +39,7 @@ class FoodItemEditFragment : Fragment(R.layout.fragment_food_item_edit) {
         super.onCreate(savedInstanceState)
         foodItem = args.foodItem
         restaurantId = foodItem?.restaurant?.id
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -53,7 +55,6 @@ class FoodItemEditFragment : Fragment(R.layout.fragment_food_item_edit) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<AutoCompleteTextView>(R.id.text_input_select_restaurant).apply {
             setOnClickListener { textInput ->
@@ -78,12 +79,21 @@ class FoodItemEditFragment : Fragment(R.layout.fragment_food_item_edit) {
                 popup.show()
             }
         }
+    }
 
-        // Set save button behavior.
-        view.findViewById<Button>(R.id.button_save_food_item).setOnClickListener {
-            val savedItem = saveFoodItem(view)
-            val action = FoodItemEditFragmentDirections.actionReturnToFoodItemDetail(savedItem)
-            findNavController().navigate(action)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_edit, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.menu_item_save -> {
+                val savedItem = saveFoodItem(requireView())
+                val action = FoodItemEditFragmentDirections.actionReturnToFoodItemDetail(savedItem)
+                findNavController().navigate(action)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

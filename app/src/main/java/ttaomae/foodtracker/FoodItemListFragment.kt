@@ -2,6 +2,8 @@ package ttaomae.foodtracker
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -21,6 +23,11 @@ import ttaomae.foodtracker.viewmodel.FoodItemListViewModel
 @AndroidEntryPoint
 class ListFoodItemFragment : Fragment(R.layout.fragment_food_item_list) {
     private val viewModel: FoodItemListViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,6 +49,10 @@ class ListFoodItemFragment : Fragment(R.layout.fragment_food_item_list) {
             val action = ListFoodItemFragmentDirections.actionAddFoodItem()
             findNavController().navigate(action)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_list, menu)
     }
 }
 

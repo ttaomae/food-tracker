@@ -2,9 +2,11 @@ package ttaomae.foodtracker
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -27,6 +29,7 @@ class RestaurantEditFragment : Fragment(R.layout.fragment_restaurant_edit) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         restaurant = args.restaurant
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -41,15 +44,20 @@ class RestaurantEditFragment : Fragment(R.layout.fragment_restaurant_edit) {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_edit, menu)
+    }
 
-        // Set save button behavior.
-        view.findViewById<Button>(R.id.button_save_restaurant).setOnClickListener {
-            val savedRestaurant = saveRestaurant(view)
-            val action =
-                RestaurantEditFragmentDirections.actionReturnToRestaurantDetail(savedRestaurant)
-            findNavController().navigate(action)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_item_save -> {
+                val savedRestaurant = saveRestaurant(requireView())
+                val action =
+                    RestaurantEditFragmentDirections.actionReturnToRestaurantDetail(savedRestaurant)
+                findNavController().navigate(action)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

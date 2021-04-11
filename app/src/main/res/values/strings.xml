@@ -15,4 +15,7 @@
     <string name="edit_restaurant_label">Edit</string>
     <string name="edit_item_label">Edit</string>
     <string name="no_description_label">No description</string>
+    <string name="menu_item_edit">Edit</string>
+    <string name="menu_item_delete">Delete</string>
+    <string name="menu_item_save">Save</string>
 </resources>
