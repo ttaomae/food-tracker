@@ -37,6 +37,10 @@ interface FoodItemDao {
     @Query("SELECT * FROM food_item")
     suspend fun findAll(): List<FoodItem>
 
+    @Transaction
+    @Query("SELECT * FROM food_item WHERE id = :id")
+    suspend fun findWithRestaurant(id: Long): FoodItemWithRestaurant?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(foodItem: FoodItem): Long
 
@@ -54,7 +58,7 @@ interface RestaurantDao {
 
     @Transaction
     @Query("SELECT * FROM restaurant WHERE id = :id")
-    suspend fun findWithFoodItems(id: Long): RestaurantWithFoodItems
+    fun findWithFoodItems(id: Long): RestaurantWithFoodItems
 
     @Transaction
     @Query("SELECT * FROM restaurant")

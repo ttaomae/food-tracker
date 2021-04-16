@@ -18,28 +18,18 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import ttaomae.foodtracker.data.FoodItem
-import ttaomae.foodtracker.data.FoodItemRepository
-import ttaomae.foodtracker.data.FoodItemWithRestaurant
 import ttaomae.foodtracker.data.Restaurant
 import ttaomae.foodtracker.databinding.FragmentFoodItemEditBinding
-import ttaomae.foodtracker.viewmodel.RestaurantListViewModel
-import javax.inject.Inject
+import ttaomae.foodtracker.viewmodel.FoodItemEditViewModel
 
 @AndroidEntryPoint
 class FoodItemEditFragment : Fragment(R.layout.fragment_food_item_edit) {
-    @Inject lateinit var foodItemRepository: FoodItemRepository
     private val args: FoodItemEditFragmentArgs by navArgs()
-    private var foodItem: FoodItemWithRestaurant? = null
-    private var restaurantId: Long? = null
-    private val viewModel: RestaurantListViewModel by viewModels()
+    private val viewModel: FoodItemEditViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        foodItem = args.foodItem
-        restaurantId = foodItem?.restaurant?.id
+        viewModel.setFoodItem(args.foodItemId)
         setHasOptionsMenu(true)
     }
 
@@ -51,7 +41,15 @@ class FoodItemEditFragment : Fragment(R.layout.fragment_food_item_edit) {
         val binding = DataBindingUtil.inflate<FragmentFoodItemEditBinding>(
             layoutInflater, R.layout.fragment_food_item_edit, container, false
         )
-        binding.foodItem = foodItem
+        viewModel.foodItem.observe(viewLifecycleOwner) {
+            binding.foodItem = it
+        }
+
+        // After an item is saved, return to detail fragment.
+        viewModel.savedItemId.observe(viewLifecycleOwner) {
+            val action = FoodItemEditFragmentDirections.actionReturnToFoodItemDetail(it)
+            findNavController().navigate(action)
+        }
         return binding.root
     }
 
@@ -84,8 +82,7 @@ class FoodItemEditFragment : Fragment(R.layout.fragment_food_item_edit) {
         // When a popup menu item is clicked, set EditText value and update restaurant.
         popup.setOnMenuItemClickListener { menuItem ->
             textView.setText(menuItem.title)
-            restaurantId = restaurants[menuItem.order].id
-            println(restaurantId)
+            viewModel.selectRestaurant(restaurants[menuItem.order].id)
             true
         }
         popup.show()
@@ -98,39 +95,24 @@ class FoodItemEditFragment : Fragment(R.layout.fragment_food_item_edit) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_item_save -> {
-                val savedItem = saveFoodItem(requireView())
-                val action = FoodItemEditFragmentDirections.actionReturnToFoodItemDetail(savedItem)
-                findNavController().navigate(action)
+                saveFoodItem(requireView())
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun saveFoodItem(view: View): FoodItemWithRestaurant {
+    private fun saveFoodItem(view: View) {
         // Get field values and create new item.
-        val restaurantView =
-            view.findViewById<AutoCompleteTextView>(R.id.text_input_select_restaurant)
         val nameView = view.findViewById<EditText>(R.id.text_input_food_item_name)
         val descriptionView = view.findViewById<EditText>(R.id.text_input_food_item_description)
         val ratingView = view.findViewById<RatingBar>(R.id.rating_bar_food_item_input)
-        val restaurantName = restaurantView.text.toString()
         val name = nameView.text.toString()
         val description = descriptionView.text.toString()
         val rating = ratingView.rating
-        val foodItem = FoodItem(foodItem?.id, restaurantId, name, description, rating)
-        var id: Long? = null
 
         // Save to repository.
-        runBlocking {
-            launch {
-                id = foodItemRepository.save(foodItem)
-            }
-        }
+        viewModel.saveItem(name, description, rating)
 
-        return FoodItemWithRestaurant(
-            FoodItem(id!!, restaurantId, name, description, rating),
-            Restaurant(restaurantId, restaurantName)
-        )
     }
 }

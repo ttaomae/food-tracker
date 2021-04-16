@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <import type="ttaomae.foodtracker.data.Restaurant" />
-        <variable name="restaurant" type="Restaurant" />
+        <import type="ttaomae.foodtracker.data.RestaurantWithFoodItems" />
+        <variable name="restaurant" type="RestaurantWithFoodItems" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,11 +17,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/restaurant_name_hint"
-            android:text="@{restaurant.name}"
+            android:text="@{restaurant.restaurant.name}"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_view_item_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/restaurant_name_hint"
+            android:text="@{restaurant.foodItems.size + ` item(s)`}"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_restaurant_name" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

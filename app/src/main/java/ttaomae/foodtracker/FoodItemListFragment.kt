@@ -63,7 +63,7 @@ class FoodItemAdapter :
         init {
             binding.root.setOnClickListener {
                 binding.foodItem?.let {
-                    val action = ListFoodItemFragmentDirections.actionLoadFoodItemDetails(it)
+                    val action = ListFoodItemFragmentDirections.actionLoadFoodItemDetails(it.foodItem.id)
                     binding.root.findNavController().navigate(action)
                 }
             }
@@ -99,9 +99,9 @@ object FoodItemCallback : DiffUtil.ItemCallback<FoodItemWithRestaurant>() {
         oldItem: FoodItemWithRestaurant,
         newItem: FoodItemWithRestaurant
     ): Boolean {
-        return oldItem.foodItem.name == newItem.name
-                && oldItem.description == newItem.description
-                && oldItem.rating == newItem.rating
+        return oldItem.foodItem.name == newItem.foodItem.name
+                && oldItem.foodItem.description == newItem.foodItem.description
+                && oldItem.foodItem.rating == newItem.foodItem.rating
                 && oldItem.restaurant.name == newItem.restaurant.name
     }
 }

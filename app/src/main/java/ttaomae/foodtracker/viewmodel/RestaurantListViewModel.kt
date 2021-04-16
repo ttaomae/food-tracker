@@ -6,11 +6,14 @@ import androidx.lifecycle.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ttaomae.foodtracker.data.Restaurant
 import ttaomae.foodtracker.data.RestaurantRepository
+import ttaomae.foodtracker.data.RestaurantWithFoodItems
 import javax.inject.Inject
 
 @HiltViewModel
 class RestaurantListViewModel @Inject internal constructor(
     restaurantRepository: RestaurantRepository
-): ViewModel() {
+) : ViewModel() {
     val restaurants: LiveData<List<Restaurant>> = restaurantRepository.getAll().asLiveData()
+    val restaurantsWithFoodItems: LiveData<List<RestaurantWithFoodItems>> =
+        restaurantRepository.getAllWithFoodItems().asLiveData()
 }

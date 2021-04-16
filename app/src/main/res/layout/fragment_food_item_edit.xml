@@ -53,7 +53,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName|textCapWords"
-                    android:text="@{foodItem.name}" />
+                    android:text="@{foodItem.foodItem.name}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,7 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
-                    android:text="@{foodItem.description}"/>
+                    android:text="@{foodItem.foodItem.description}"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -76,7 +76,7 @@
                 android:id="@+id/rating_bar_food_item_input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:rating="@{foodItem.rating}" />
+                android:rating="@{foodItem.foodItem.rating}" />
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

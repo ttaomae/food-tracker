@@ -9,7 +9,6 @@ import androidx.room.Relation
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
-@Parcelize
 @Entity(
     tableName = "food_item",
     foreignKeys = [
@@ -27,15 +26,13 @@ data class FoodItem(
     val name: String,
     val description: String,
     val rating: Float
-) : Parcelable {
+) {
     constructor(id: Long?, restaurantId: Long?, name: String, description: String, rating: Float) :
             this(id ?: 0L, restaurantId ?: 0L, name, description, rating)
 }
 
-@Parcelize
 @Entity(tableName = "restaurant")
-data class Restaurant(@PrimaryKey(autoGenerate = true) val id: Long, val name: String) :
-    Parcelable {
+data class Restaurant(@PrimaryKey(autoGenerate = true) val id: Long, val name: String) {
     constructor(id: Long?, name: String) : this(id ?: 0L, name)
 }
 
@@ -52,13 +49,11 @@ data class RestaurantWithFoodItems(
     }
 }
 
-@Parcelize
 data class FoodItemWithRestaurant(
-    val foodItem: FoodItem,
+    @Embedded val foodItem: FoodItem,
+    @Relation(
+        parentColumn = "restaurantId",
+        entityColumn = "id"
+    )
     val restaurant: Restaurant,
-) : Parcelable {
-    @IgnoredOnParcel val id = foodItem.id
-    @IgnoredOnParcel val name = foodItem.name
-    @IgnoredOnParcel val description = foodItem.description
-    @IgnoredOnParcel val rating = foodItem.rating
-}
+)

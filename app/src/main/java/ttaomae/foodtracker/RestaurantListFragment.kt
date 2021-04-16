@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
-import ttaomae.foodtracker.data.Restaurant
+import ttaomae.foodtracker.data.RestaurantWithFoodItems
 import ttaomae.foodtracker.databinding.RestaurantSummaryBinding
 import ttaomae.foodtracker.viewmodel.RestaurantListViewModel
 
@@ -33,7 +33,7 @@ class ListRestaurantFragment : Fragment(R.layout.fragment_restaurant_list) {
         super.onViewCreated(view, savedInstanceState)
 
         val restaurantAdapter = RestaurantAdapter()
-        viewModel.restaurants.observe(viewLifecycleOwner) { result ->
+        viewModel.restaurantsWithFoodItems.observe(viewLifecycleOwner) { result ->
             restaurantAdapter.submitList(result)
         }
 
@@ -57,19 +57,19 @@ class ListRestaurantFragment : Fragment(R.layout.fragment_restaurant_list) {
 }
 
 class RestaurantAdapter :
-    ListAdapter<Restaurant, RestaurantAdapter.ViewHolder>(RestaurantCallback) {
+    ListAdapter<RestaurantWithFoodItems, RestaurantAdapter.ViewHolder>(RestaurantCallback) {
     class ViewHolder(private val binding: RestaurantSummaryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
                 binding.restaurant?.let {
-                    val action = ListRestaurantFragmentDirections.actionLoadRestaurantDetails(it)
+                    val action = ListRestaurantFragmentDirections.actionLoadRestaurantDetails(it.restaurant.id)
                     binding.root.findNavController().navigate(action)
                 }
             }
         }
 
-        fun bind(restaurant: Restaurant) {
+        fun bind(restaurant: RestaurantWithFoodItems) {
             binding.restaurant = restaurant
             binding.executePendingBindings()
         }
@@ -87,12 +87,12 @@ class RestaurantAdapter :
     }
 }
 
-object RestaurantCallback : DiffUtil.ItemCallback<Restaurant>() {
-    override fun areItemsTheSame(oldItem: Restaurant, newItem: Restaurant): Boolean {
+object RestaurantCallback : DiffUtil.ItemCallback<RestaurantWithFoodItems>() {
+    override fun areItemsTheSame(oldItem: RestaurantWithFoodItems, newItem: RestaurantWithFoodItems): Boolean {
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: Restaurant, newItem: Restaurant): Boolean {
-        return oldItem.name == newItem.name
+    override fun areContentsTheSame(oldItem: RestaurantWithFoodItems, newItem: RestaurantWithFoodItems): Boolean {
+        return oldItem.restaurant.name == newItem.restaurant.name
     }
 }

@@ -49,8 +49,8 @@
             android:id="@+id/action_editFoodItem"
             app:destination="@id/foodItemEditFragment" />
         <argument
-            android:name="foodItem"
-            app:argType="ttaomae.foodtracker.data.FoodItemWithRestaurant" />
+            android:name="foodItemId"
+            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/restaurantDetailFragment"
@@ -65,33 +65,32 @@
             android:id="@+id/action_editRestaurant"
             app:destination="@id/restaurantEditFragment" />
         <argument
-            android:name="restaurant"
-            app:argType="ttaomae.foodtracker.data.Restaurant" />
+            android:name="restaurantId"
+            app:argType="long"
+            android:defaultValue="0L" />
     </fragment>
     <fragment
         android:id="@+id/restaurantEditFragment"
         android:name="ttaomae.foodtracker.RestaurantEditFragment"
         android:label="Edit">
-        <argument
-            android:name="restaurant"
-            android:defaultValue="@null"
-            app:argType="ttaomae.foodtracker.data.Restaurant"
-            app:nullable="true" />
         <action
             android:id="@+id/action_returnToRestaurantDetail"
             app:destination="@id/restaurantDetailFragment"
             app:popUpTo="@id/restaurantListFragment"
             app:popUpToInclusive="false" />
+        <argument
+            android:name="restaurantId"
+            app:argType="long"
+            android:defaultValue="0L" />
     </fragment>
     <fragment
         android:id="@+id/foodItemEditFragment"
         android:name="ttaomae.foodtracker.FoodItemEditFragment"
         android:label="Edit">
         <argument
-            android:name="foodItem"
-            android:defaultValue="@null"
-            app:argType="ttaomae.foodtracker.data.FoodItemWithRestaurant"
-            app:nullable="true" />
+            android:name="foodItemId"
+            app:argType="long"
+            android:defaultValue="0L" />
         <action
             android:id="@+id/action_returnToFoodItemDetail"
             app:destination="@id/foodItemDetailFragment"

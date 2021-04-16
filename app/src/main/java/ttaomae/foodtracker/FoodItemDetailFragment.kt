@@ -9,25 +9,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import ttaomae.foodtracker.data.FoodItemRepository
-import ttaomae.foodtracker.data.FoodItemWithRestaurant
 import ttaomae.foodtracker.databinding.FragmentFoodItemDetailBinding
-import javax.inject.Inject
+import ttaomae.foodtracker.viewmodel.FoodItemDetailViewModel
 
 @AndroidEntryPoint
 class FoodItemDetailFragment : Fragment(R.layout.fragment_food_item_detail) {
-    @Inject lateinit var foodItemRepository: FoodItemRepository
     private val args: FoodItemDetailFragmentArgs by navArgs()
-    private lateinit var foodItem: FoodItemWithRestaurant
+    private val viewModel: FoodItemDetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        foodItem = args.foodItem
+        viewModel.setItem(args.foodItemId)
         setHasOptionsMenu(true)
     }
 
@@ -39,7 +35,9 @@ class FoodItemDetailFragment : Fragment(R.layout.fragment_food_item_detail) {
         val binding = DataBindingUtil.inflate<FragmentFoodItemDetailBinding>(
             layoutInflater, R.layout.fragment_food_item_detail, container, false
         )
-        binding.foodItem = foodItem
+        viewModel.foodItem.observe(viewLifecycleOwner) {
+            binding.foodItem = it
+        }
         return binding.root
     }
 
@@ -50,8 +48,10 @@ class FoodItemDetailFragment : Fragment(R.layout.fragment_food_item_detail) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_item_edit -> {
-                val action = FoodItemDetailFragmentDirections.actionEditFoodItem(foodItem)
-                findNavController().navigate(action)
+                viewModel.foodItem.observe(viewLifecycleOwner) {
+                    val action = FoodItemDetailFragmentDirections.actionEditFoodItem(it.foodItem.id)
+                    findNavController().navigate(action)
+                }
                 true
             }
             R.id.menu_item_delete -> {
@@ -65,12 +65,6 @@ class FoodItemDetailFragment : Fragment(R.layout.fragment_food_item_detail) {
     }
 
     private fun deleteFoodItem() {
-        foodItem.foodItem.let {
-            runBlocking {
-                launch {
-                    foodItemRepository.delete(it)
-                }
-            }
-        }
+        viewModel.deleteItem()
     }
 }
