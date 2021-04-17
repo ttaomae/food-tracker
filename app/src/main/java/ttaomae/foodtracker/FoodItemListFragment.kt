@@ -46,7 +46,7 @@ class ListFoodItemFragment : Fragment(R.layout.fragment_food_item_list) {
 
         // Set add button behavior.
         view.findViewById<FloatingActionButton>(R.id.fab_add_item).setOnClickListener {
-            val action = ListFoodItemFragmentDirections.actionAddFoodItem()
+            val action = MainFragmentDirections.actionAddFoodItem()
             findNavController().navigate(action)
         }
     }
@@ -63,7 +63,7 @@ class FoodItemAdapter :
         init {
             binding.root.setOnClickListener {
                 binding.foodItem?.let {
-                    val action = ListFoodItemFragmentDirections.actionLoadFoodItemDetails(it.foodItem.id)
+                    val action = MainFragmentDirections.actionViewFoodItem(it.foodItem.id)
                     binding.root.findNavController().navigate(action)
                 }
             }

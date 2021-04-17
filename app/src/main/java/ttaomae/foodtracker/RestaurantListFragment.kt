@@ -46,7 +46,7 @@ class ListRestaurantFragment : Fragment(R.layout.fragment_restaurant_list) {
 
         // Set add button behavior.
         view.findViewById<FloatingActionButton>(R.id.fab_add_restaurant).setOnClickListener {
-            val action = ListRestaurantFragmentDirections.actionAddRestaurant()
+            val action = MainFragmentDirections.actionAddRestaurant()
             findNavController().navigate(action)
         }
     }
@@ -63,7 +63,7 @@ class RestaurantAdapter :
         init {
             binding.root.setOnClickListener {
                 binding.restaurant?.let {
-                    val action = ListRestaurantFragmentDirections.actionLoadRestaurantDetails(it.restaurant.id)
+                    val action = MainFragmentDirections.actionViewRestaurant(it.restaurant.id)
                     binding.root.findNavController().navigate(action)
                 }
             }
