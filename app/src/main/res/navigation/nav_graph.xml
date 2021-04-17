@@ -19,6 +19,10 @@
         <action
             android:id="@+id/action_addFoodItem"
             app:destination="@id/foodItemEditFragment" />
+        <argument
+            android:name="tabIndex"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
     <fragment
         android:id="@+id/foodItemDetailFragment"

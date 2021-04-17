@@ -57,7 +57,8 @@ class RestaurantDetailFragment : Fragment(R.layout.fragment_restaurant_detail) {
             }
             R.id.menu_item_delete -> {
                 deleteRestaurant()
-                val action = RestaurantDetailFragmentDirections.actionReturnToRestaurantList()
+                val action = RestaurantDetailFragmentDirections
+                    .actionReturnToRestaurantList(MainFragment.RESTAURANT_TAB_INDEX)
                 findNavController().navigate(action)
                 true
             }

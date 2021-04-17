@@ -3,12 +3,20 @@ package ttaomae.foodtracker
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MainFragment : Fragment(R.layout.fragment_main) {
+    companion object {
+        const val FOOD_TAB_INDEX = 0
+        const val RESTAURANT_TAB_INDEX = 1
+    }
+
+    private val args: MainFragmentArgs by navArgs()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -17,11 +25,14 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             viewPager.adapter = ScreenSlidePagerAdapter(this)
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            val context = requireContext()
             when (position) {
-                0 -> tab.text = requireContext().getString(R.string.food_tab_label)
-                1 -> tab.text = requireContext().getString(R.string.restaurants_tab_label)
+                FOOD_TAB_INDEX -> tab.text = context.getString(R.string.food_tab_label)
+                RESTAURANT_TAB_INDEX -> tab.text = context.getString(R.string.restaurants_tab_label)
             }
         }.attach()
+
+        viewPager.currentItem = args.tabIndex
     }
 
     private inner class ScreenSlidePagerAdapter(f: Fragment) : FragmentStateAdapter(f) {
@@ -29,8 +40,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
         override fun createFragment(position: Int): Fragment {
             return when (position) {
-                0 -> ListFoodItemFragment()
-                1 -> ListRestaurantFragment()
+                FOOD_TAB_INDEX -> ListFoodItemFragment()
+                RESTAURANT_TAB_INDEX -> ListRestaurantFragment()
                 else -> throw IllegalStateException()
             }
         }
