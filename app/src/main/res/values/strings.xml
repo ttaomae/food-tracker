@@ -18,4 +18,8 @@
     <string name="menu_item_edit">Edit</string>
     <string name="menu_item_delete">Delete</string>
     <string name="menu_item_save">Save</string>
+    <plurals name="items">
+        <item quantity="one">%d item</item>
+        <item quantity="other">%d items</item>
+    </plurals>
 </resources>
