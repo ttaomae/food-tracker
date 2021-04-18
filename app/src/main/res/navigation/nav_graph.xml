@@ -2,9 +2,9 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainMenuFragment">
+    app:startDestination="@id/mainFragment">
     <fragment
-        android:id="@+id/mainMenuFragment"
+        android:id="@+id/mainFragment"
         android:name="ttaomae.foodtracker.MainFragment"
         android:label="Food Tracker">
         <action
@@ -25,21 +25,6 @@
             android:defaultValue="-1" />
     </fragment>
     <fragment
-        android:id="@+id/foodItemDetailFragment"
-        android:name="ttaomae.foodtracker.FoodItemDetailFragment"
-        android:label="Detail">
-        <action
-            android:id="@+id/action_editFoodItem"
-            app:destination="@id/foodItemEditFragment" />
-        <argument
-            android:name="foodItemId"
-            app:argType="long" />
-        <action
-            android:id="@+id/action_returnToFoodItemList"
-            app:destination="@id/mainMenuFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
-    <fragment
         android:id="@+id/restaurantDetailFragment"
         android:name="ttaomae.foodtracker.RestaurantDetailFragment"
         android:label="Detail">
@@ -52,8 +37,11 @@
             android:defaultValue="0L" />
         <action
             android:id="@+id/action_returnToRestaurantList"
-            app:destination="@id/mainMenuFragment"
+            app:destination="@id/mainFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_editRestaurantItem"
+            app:destination="@id/foodItemDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/restaurantEditFragment"
@@ -62,12 +50,27 @@
         <action
             android:id="@+id/action_returnToRestaurantDetail"
             app:destination="@id/restaurantDetailFragment"
-            app:popUpTo="@id/mainMenuFragment"
+            app:popUpTo="@id/mainFragment"
             app:popUpToInclusive="false" />
         <argument
             android:name="restaurantId"
             app:argType="long"
             android:defaultValue="0L" />
+    </fragment>
+    <fragment
+        android:id="@+id/foodItemDetailFragment"
+        android:name="ttaomae.foodtracker.FoodItemDetailFragment"
+        android:label="Detail">
+        <action
+            android:id="@+id/action_editFoodItem"
+            app:destination="@id/foodItemEditFragment" />
+        <argument
+            android:name="foodItemId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_returnToFoodItemList"
+            app:destination="@id/mainFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/foodItemEditFragment"
@@ -80,7 +83,7 @@
         <action
             android:id="@+id/action_returnToFoodItemDetail"
             app:destination="@id/foodItemDetailFragment"
-            app:popUpTo="@id/mainMenuFragment"
-            app:popUpToInclusive="false" />
+            app:popUpTo="@id/foodItemDetailFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

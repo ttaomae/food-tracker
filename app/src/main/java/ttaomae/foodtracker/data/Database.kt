@@ -58,7 +58,7 @@ interface RestaurantDao {
 
     @Transaction
     @Query("SELECT * FROM restaurant WHERE id = :id")
-    fun findWithFoodItems(id: Long): RestaurantWithFoodItems
+    suspend fun findWithFoodItems(id: Long): RestaurantWithFoodItems
 
     @Transaction
     @Query("SELECT * FROM restaurant")

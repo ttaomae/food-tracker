@@ -40,7 +40,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
         override fun createFragment(position: Int): Fragment {
             return when (position) {
-                FOOD_TAB_INDEX -> ListFoodItemFragment()
+                FOOD_TAB_INDEX -> FoodItemListFragment()
                 RESTAURANT_TAB_INDEX -> ListRestaurantFragment()
                 else -> throw IllegalStateException()
             }

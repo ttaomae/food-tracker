@@ -7,25 +7,26 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ttaomae.foodtracker.data.Restaurant
 import ttaomae.foodtracker.data.RestaurantRepository
+import ttaomae.foodtracker.data.RestaurantWithFoodItems
 import javax.inject.Inject
 
 @HiltViewModel
 class RestaurantDetailViewModel @Inject internal constructor(
     private val restaurantRepository: RestaurantRepository
 ) : ViewModel() {
-    val restaurant: MutableLiveData<Restaurant> by lazy {
-        MutableLiveData<Restaurant>()
+    val restaurant: MutableLiveData<RestaurantWithFoodItems> by lazy {
+        MutableLiveData<RestaurantWithFoodItems>()
     }
 
     fun setRestaurant(id: Long) {
         viewModelScope.launch {
-            restaurant.value = restaurantRepository.get(id)
+            restaurant.value = restaurantRepository.getWithFoodItems(id)
         }
     }
 
     fun deleteRestaurant() {
         viewModelScope.launch {
-            restaurantRepository.delete(restaurant.value!!)
+            restaurantRepository.delete(restaurant.value!!.restaurant)
         }
     }
 }

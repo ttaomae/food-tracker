@@ -7,6 +7,7 @@
         <import type="ttaomae.foodtracker.data.Restaurant" />
         <variable name="restaurant" type="Restaurant" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -22,5 +23,31 @@
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/restaurant_items_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@color/gray_400"
+            app:layout_constraintBottom_toTopOf="@+id/recycler_view_restaurant_items_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_restaurant_detail_name" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_restaurant_items_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/restaurant_items_divider" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
