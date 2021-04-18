@@ -47,7 +47,15 @@ class FoodItemEditFragment : Fragment(R.layout.fragment_food_item_edit) {
 
         // After an item is saved, return to detail fragment.
         viewModel.savedItemId.observe(viewLifecycleOwner) {
-            val action = FoodItemEditFragmentDirections.actionReturnToFoodItemDetail(it)
+            val navController = findNavController()
+            // Depending on how we got to this fragment, use a different action so that the back
+            // stack is put into the correct state.
+            val previousDestinationId = navController.previousBackStackEntry?.destination?.id
+            val action = if (previousDestinationId == R.id.foodItemDetailFragment) {
+                FoodItemEditFragmentDirections.actionReturnToFoodItemDetail(it)
+            } else {
+                FoodItemEditFragmentDirections.actionGoToFoodItemDetail(it)
+            }
             findNavController().navigate(action)
         }
         return binding.root

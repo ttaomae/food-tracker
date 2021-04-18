@@ -85,5 +85,10 @@
             app:destination="@id/foodItemDetailFragment"
             app:popUpTo="@id/foodItemDetailFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_goToFoodItemDetail"
+            app:destination="@id/foodItemDetailFragment"
+            app:popUpTo="@id/foodItemEditFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

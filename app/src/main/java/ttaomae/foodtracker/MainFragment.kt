@@ -22,7 +22,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
         val tabLayout = view.findViewById<TabLayout>(R.id.main_tab_layout)
         val viewPager = view.findViewById<ViewPager2>(R.id.main_view_pager)
-            viewPager.adapter = ScreenSlidePagerAdapter(this)
+        viewPager.adapter = ScreenSlidePagerAdapter(this)
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             val context = requireContext()
