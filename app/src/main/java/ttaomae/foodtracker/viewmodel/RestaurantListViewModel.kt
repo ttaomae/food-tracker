@@ -13,7 +13,6 @@ import javax.inject.Inject
 class RestaurantListViewModel @Inject internal constructor(
     restaurantRepository: RestaurantRepository
 ) : ViewModel() {
-    val restaurants: LiveData<List<Restaurant>> = restaurantRepository.getAll().asLiveData()
     val restaurantsWithFoodItems: LiveData<List<RestaurantWithFoodItems>> =
         restaurantRepository.getAllWithFoodItems().asLiveData()
 }

@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_editRestaurantItem"
             app:destination="@id/foodItemDetailFragment" />
+        <action
+            android:id="@+id/action_addRestaurantItem"
+            app:destination="@id/foodItemEditFragment" />
     </fragment>
     <fragment
         android:id="@+id/restaurantEditFragment"
@@ -78,6 +81,10 @@
         android:label="Edit">
         <argument
             android:name="foodItemId"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <argument
+            android:name="restaurantId"
             app:argType="long"
             android:defaultValue="0L" />
         <action

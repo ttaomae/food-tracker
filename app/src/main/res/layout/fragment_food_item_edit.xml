@@ -5,6 +5,7 @@
     <data>
         <import type="android.view.View" />
         <variable name="foodItem" type="ttaomae.foodtracker.data.FoodItemWithRestaurant" />
+        <variable name="restaurant" type="ttaomae.foodtracker.data.Restaurant" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,15 +31,33 @@
                 android:id="@+id/text_input_layout_select_restaurant"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:visibility="@{restaurant == null ? View.VISIBLE : View.GONE}">
 
                 <AutoCompleteTextView
                     android:id="@+id/text_input_select_restaurant"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/select_restaurant_hint"
+                    android:inputType="none" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/restaurant_hint"
+                android:visibility="@{restaurant == null ? View.GONE : View.VISIBLE}">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:inputType="none"
-                    android:text="@{foodItem.restaurant.name}" />
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:cursorVisible="false"
+                    android:text="@{restaurant.name}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

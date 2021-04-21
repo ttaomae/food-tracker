@@ -54,7 +54,7 @@ interface RestaurantDao {
     suspend fun findById(id: Long): Restaurant?
 
     @Query("SELECT * FROM restaurant")
-    fun findAll(): Flow<List<Restaurant>>
+    suspend fun findAll(): List<Restaurant>
 
     @Transaction
     @Query("SELECT * FROM restaurant WHERE id = :id")

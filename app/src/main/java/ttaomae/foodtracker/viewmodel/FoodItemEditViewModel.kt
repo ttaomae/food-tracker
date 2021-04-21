@@ -19,10 +19,16 @@ class FoodItemEditViewModel @Inject internal constructor(
     private val foodItemRepository: FoodItemRepository,
     private val restaurantRepository: RestaurantRepository
 ) : ViewModel() {
-    val restaurants: LiveData<List<Restaurant>> = restaurantRepository.getAll().asLiveData()
+    val restaurants: MutableLiveData<List<Restaurant>> by lazy {
+        MutableLiveData<List<Restaurant>>()
+    }
 
     val foodItem: MutableLiveData<FoodItemWithRestaurant> by lazy {
         MutableLiveData<FoodItemWithRestaurant>()
+    }
+
+    val restaurant: MutableLiveData<Restaurant> by lazy {
+        MutableLiveData<Restaurant>()
     }
 
     private val selectedRestaurantId: MutableLiveData<Long> by lazy {
@@ -39,6 +45,17 @@ class FoodItemEditViewModel @Inject internal constructor(
             if (f != null) {
                 foodItem.value = f
                 selectedRestaurantId.value = f.restaurant.id
+            }
+        }
+    }
+
+    fun setRestaurant(id: Long) {
+        viewModelScope.launch {
+            restaurantRepository.get(id)?.let {
+                restaurant.value = it
+                selectRestaurant(id)
+            } ?: run {
+                restaurants.value = restaurantRepository.getAll()
             }
         }
     }

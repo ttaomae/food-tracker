@@ -49,7 +49,9 @@ class FoodItemDetailFragment : Fragment(R.layout.fragment_food_item_detail) {
         return when (item.itemId) {
             R.id.menu_item_edit -> {
                 viewModel.foodItem.observe(viewLifecycleOwner) {
-                    val action = FoodItemDetailFragmentDirections.actionEditFoodItem(it.foodItem.id)
+                    val action = FoodItemDetailFragmentDirections.actionEditFoodItem(
+                        foodItemId = it.foodItem.id
+                    )
                     findNavController().navigate(action)
                 }
                 true

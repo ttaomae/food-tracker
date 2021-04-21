@@ -30,6 +30,7 @@ class FoodItemEditFragment : Fragment(R.layout.fragment_food_item_edit) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.setFoodItem(args.foodItemId)
+        viewModel.setRestaurant(args.restaurantId)
         setHasOptionsMenu(true)
     }
 
@@ -43,6 +44,9 @@ class FoodItemEditFragment : Fragment(R.layout.fragment_food_item_edit) {
         )
         viewModel.foodItem.observe(viewLifecycleOwner) {
             binding.foodItem = it
+        }
+        viewModel.restaurant.observe(viewLifecycleOwner) {
+            binding.restaurant = it
         }
 
         // After an item is saved, return to detail fragment.
@@ -65,14 +69,14 @@ class FoodItemEditFragment : Fragment(R.layout.fragment_food_item_edit) {
         super.onViewCreated(view, savedInstanceState)
         val restaurants = mutableListOf<Restaurant>()
         viewModel.restaurants.observe(viewLifecycleOwner) { result ->
-            result.forEach { restaurants.add(it) }
+            restaurants.addAll(result)
+            val textLayout =
+                view.findViewById<TextInputLayout>(R.id.text_input_layout_select_restaurant)
+            val textView =
+                view.findViewById<AutoCompleteTextView>(R.id.text_input_select_restaurant)
+            textLayout.setEndIconOnClickListener { setupPopup(textLayout, restaurants, textView) }
+            textView.setOnClickListener { setupPopup(textLayout, restaurants, textView) }
         }
-
-        val textLayout =
-            view.findViewById<TextInputLayout>(R.id.text_input_layout_select_restaurant)
-        val textView = view.findViewById<AutoCompleteTextView>(R.id.text_input_select_restaurant)
-        textLayout.setEndIconOnClickListener { setupPopup(textLayout, restaurants, textView) }
-        textView.setOnClickListener { setupPopup(textLayout, restaurants, textView) }
     }
 
     private fun setupPopup(

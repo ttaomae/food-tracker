@@ -26,7 +26,7 @@ class FoodItemDaoRepository @Inject constructor(private val foodItemDao: FoodIte
 
 interface RestaurantRepository {
     suspend fun get(id: Long): Restaurant?
-    fun getAll(): Flow<List<Restaurant>>
+    suspend fun getAll(): List<Restaurant>
     suspend fun getWithFoodItems(id: Long): RestaurantWithFoodItems
     fun getAllWithFoodItems(): Flow<List<RestaurantWithFoodItems>>
     suspend fun save(restaurant: Restaurant): Long
@@ -37,7 +37,7 @@ interface RestaurantRepository {
 class RestaurantDaoRepository @Inject constructor(private val restaurantDao: RestaurantDao) :
     RestaurantRepository {
     override suspend fun get(id: Long): Restaurant? = restaurantDao.findById(id)
-    override fun getAll() = restaurantDao.findAll()
+    override suspend fun getAll() = restaurantDao.findAll()
     override suspend fun getWithFoodItems(id: Long): RestaurantWithFoodItems =
         restaurantDao.findWithFoodItems(id)
 

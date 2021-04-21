@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import ttaomae.foodtracker.data.FoodItemWithRestaurant
 import ttaomae.foodtracker.databinding.FragmentRestaurantDetailBinding
@@ -64,6 +65,15 @@ class RestaurantDetailFragment : Fragment(R.layout.fragment_restaurant_detail) {
         view.findViewById<RecyclerView>(R.id.recycler_view_restaurant_items_list).apply {
             layoutManager = LinearLayoutManager(context)
             adapter = foodItemAdapter
+        }
+
+        view.findViewById<FloatingActionButton>(R.id.fab_add_restaurant_item).setOnClickListener {
+            viewModel.restaurant.observe(viewLifecycleOwner) {
+                val action = RestaurantDetailFragmentDirections.actionAddRestaurantItem(
+                    restaurantId = it.restaurant.id
+                )
+                findNavController().navigate(action)
+            }
         }
     }
 
