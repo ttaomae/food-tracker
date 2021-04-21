@@ -63,6 +63,7 @@ class RestaurantDetailFragment : Fragment(R.layout.fragment_restaurant_detail) {
 
         // Setup RecyclerView
         view.findViewById<RecyclerView>(R.id.recycler_view_restaurant_items_list).apply {
+            setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
             adapter = foodItemAdapter
         }
@@ -75,6 +76,12 @@ class RestaurantDetailFragment : Fragment(R.layout.fragment_restaurant_detail) {
                 findNavController().navigate(action)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Set restaurant again so that food items list is refreshed.
+        viewModel.setRestaurant(args.restaurantId)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
