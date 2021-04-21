@@ -9,8 +9,7 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_item_delete"
-        android:icon="@drawable/baseline_delete_24"
         android:title="@string/menu_item_delete"
         android:contentDescription="@string/menu_item_delete"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 </menu>

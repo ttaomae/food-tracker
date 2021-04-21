@@ -1,11 +1,16 @@
 package ttaomae.foodtracker
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -16,6 +21,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private val args: MainFragmentArgs by navArgs()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,6 +43,13 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }.attach()
 
         viewPager.currentItem = args.tabIndex
+
+        // Set add button behavior.
+        view.findViewById<FloatingActionButton>(R.id.fab_add_item).setOnClickListener {
+            val action = MainFragmentDirections.actionAddFoodItem()
+            findNavController().navigate(action)
+        }
+
     }
 
     private inner class ScreenSlidePagerAdapter(f: Fragment) : FragmentStateAdapter(f) {
@@ -44,6 +61,21 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 RESTAURANT_TAB_INDEX -> ListRestaurantFragment()
                 else -> throw IllegalStateException()
             }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_main, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_item_add_restaurant -> {
+                val action = MainFragmentDirections.actionAddRestaurant()
+                findNavController().navigate(action)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

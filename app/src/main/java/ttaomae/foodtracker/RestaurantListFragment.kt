@@ -2,19 +2,15 @@ package ttaomae.foodtracker
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import ttaomae.foodtracker.data.RestaurantWithFoodItems
 import ttaomae.foodtracker.databinding.RestaurantSummaryBinding
@@ -23,11 +19,6 @@ import ttaomae.foodtracker.viewmodel.RestaurantListViewModel
 @AndroidEntryPoint
 class ListRestaurantFragment : Fragment(R.layout.fragment_restaurant_list) {
     private val viewModel: RestaurantListViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,16 +34,6 @@ class ListRestaurantFragment : Fragment(R.layout.fragment_restaurant_list) {
             layoutManager = LinearLayoutManager(context)
             adapter = restaurantAdapter
         }
-
-        // Set add button behavior.
-        view.findViewById<FloatingActionButton>(R.id.fab_add_restaurant).setOnClickListener {
-            val action = MainFragmentDirections.actionAddRestaurant()
-            findNavController().navigate(action)
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_list, menu)
     }
 }
 
