@@ -1,5 +1,6 @@
 package ttaomae.foodtracker.data
 
+import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -11,21 +12,20 @@ import androidx.room.Relation
     foreignKeys = [
         ForeignKey(
             entity = Restaurant::class,
-            childColumns = ["restaurantId"],
+            childColumns = ["restaurant_id"],
             parentColumns = ["id"]
         )
     ]
 )
 data class FoodItem(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long,
-    val restaurantId: Long,
+    @PrimaryKey(autoGenerate = true) val id: Long,
+    @ColumnInfo(name = "restaurant_id") val restaurantId: Long,
     val name: String,
-    val description: String,
+    val description: String?,
     val rating: Float,
-    val comments: String
+    val comments: String?
 ) {
-    constructor(id: Long?, restaurantId: Long?, name: String, description: String, rating: Float, comments: String) :
+    constructor(id: Long?, restaurantId: Long?, name: String, description: String?, rating: Float, comments: String?) :
             this(id ?: 0L, restaurantId ?: 0L, name, description, rating, comments)
 }
 
@@ -38,7 +38,7 @@ data class RestaurantWithFoodItems(
     @Embedded val restaurant: Restaurant,
     @Relation(
         parentColumn = "id",
-        entityColumn = "restaurantId"
+        entityColumn = "restaurant_id"
     )
     val foodItems: List<FoodItem>
 ) {
@@ -50,7 +50,7 @@ data class RestaurantWithFoodItems(
 data class FoodItemWithRestaurant(
     @Embedded val foodItem: FoodItem,
     @Relation(
-        parentColumn = "restaurantId",
+        parentColumn = "restaurant_id",
         entityColumn = "id"
     )
     val restaurant: Restaurant,

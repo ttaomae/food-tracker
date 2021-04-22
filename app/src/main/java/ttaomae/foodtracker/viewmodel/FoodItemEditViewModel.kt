@@ -62,7 +62,7 @@ class FoodItemEditViewModel @Inject internal constructor(
         selectedRestaurantId.value = id
     }
 
-    fun saveItem(name: String, description: String, rating: Float, comments: String) {
+    fun saveItem(name: String, description: String?, rating: Float, comments: String?) {
         val id = foodItem.value?.foodItem?.id ?: 0L
         selectedRestaurantId.value?.let {
             val item = FoodItem(id, it, name, description, rating, comments)

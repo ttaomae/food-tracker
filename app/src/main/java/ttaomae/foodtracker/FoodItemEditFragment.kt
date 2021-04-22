@@ -121,12 +121,19 @@ class FoodItemEditFragment : Fragment(R.layout.fragment_food_item_edit) {
         val ratingView = view.findViewById<RatingBar>(R.id.rating_bar_food_item_input)
         val commentsView = view.findViewById<EditText>(R.id.text_input_food_item_comments)
         val name = nameView.text.toString()
-        val description = descriptionView.text.toString()
+        val description = descriptionView.text.toStringOrNullIfBlank()
         val rating = ratingView.rating
-        val comments = commentsView.text.toString()
+        val comments = commentsView.text.toStringOrNullIfBlank()
 
         // Save to repository.
         viewModel.saveItem(name, description, rating, comments)
+    }
 
+    private fun CharSequence.toStringOrNullIfBlank(): String? {
+        return if (this.isBlank()) {
+            null
+        } else {
+            this.toString()
+        }
     }
 }
