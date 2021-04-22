@@ -1,9 +1,7 @@
 package ttaomae.foodtracker.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -64,10 +62,10 @@ class FoodItemEditViewModel @Inject internal constructor(
         selectedRestaurantId.value = id
     }
 
-    fun saveItem(name: String, description: String, rating: Float) {
+    fun saveItem(name: String, description: String, rating: Float, comments: String) {
         val id = foodItem.value?.foodItem?.id ?: 0L
         selectedRestaurantId.value?.let {
-            val item = FoodItem(id, it, name, description, rating)
+            val item = FoodItem(id, it, name, description, rating, comments)
             viewModelScope.launch {
                 val newId = foodItemRepository.save(item)
                 savedItemId.value = newId

@@ -119,12 +119,14 @@ class FoodItemEditFragment : Fragment(R.layout.fragment_food_item_edit) {
         val nameView = view.findViewById<EditText>(R.id.text_input_food_item_name)
         val descriptionView = view.findViewById<EditText>(R.id.text_input_food_item_description)
         val ratingView = view.findViewById<RatingBar>(R.id.rating_bar_food_item_input)
+        val commentsView = view.findViewById<EditText>(R.id.text_input_food_item_comments)
         val name = nameView.text.toString()
         val description = descriptionView.text.toString()
         val rating = ratingView.rating
+        val comments = commentsView.text.toString()
 
         // Save to repository.
-        viewModel.saveItem(name, description, rating)
+        viewModel.saveItem(name, description, rating, comments)
 
     }
 }

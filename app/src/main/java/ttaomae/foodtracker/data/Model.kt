@@ -1,13 +1,10 @@
 package ttaomae.foodtracker.data
 
-import android.os.Parcelable
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.Relation
-import kotlinx.parcelize.IgnoredOnParcel
-import kotlinx.parcelize.Parcelize
 
 @Entity(
     tableName = "food_item",
@@ -25,10 +22,11 @@ data class FoodItem(
     val restaurantId: Long,
     val name: String,
     val description: String,
-    val rating: Float
+    val rating: Float,
+    val comments: String
 ) {
-    constructor(id: Long?, restaurantId: Long?, name: String, description: String, rating: Float) :
-            this(id ?: 0L, restaurantId ?: 0L, name, description, rating)
+    constructor(id: Long?, restaurantId: Long?, name: String, description: String, rating: Float, comments: String) :
+            this(id ?: 0L, restaurantId ?: 0L, name, description, rating, comments)
 }
 
 @Entity(tableName = "restaurant")

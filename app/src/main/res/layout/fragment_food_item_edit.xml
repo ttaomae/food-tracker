@@ -97,6 +97,21 @@
                 android:layout_height="wrap_content"
                 android:rating="@{foodItem.foodItem.rating}" />
 
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/comments_hint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_input_food_item_comments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:text="@{foodItem.foodItem.comments}"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

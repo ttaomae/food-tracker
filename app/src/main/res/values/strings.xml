@@ -20,6 +20,7 @@
     <string name="menu_item_save">Save</string>
     <string name="restaurant_hint">Restaurant</string>
     <string name="menu_item_add_restaurant">Add Restaurant</string>
+    <string name="comments_hint">Comments</string>
     <plurals name="items">
         <item quantity="one">%d item</item>
         <item quantity="other">%d items</item>
