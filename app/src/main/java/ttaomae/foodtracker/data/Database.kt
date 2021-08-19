@@ -53,7 +53,7 @@ interface RestaurantDao {
     @Query("SELECT * FROM restaurant WHERE id = :id")
     suspend fun findById(id: Long): Restaurant?
 
-    @Query("SELECT * FROM restaurant")
+    @Query("SELECT * FROM restaurant ORDER BY name ASC")
     suspend fun findAll(): List<Restaurant>
 
     @Transaction
@@ -61,7 +61,7 @@ interface RestaurantDao {
     suspend fun findWithFoodItems(id: Long): RestaurantWithFoodItems
 
     @Transaction
-    @Query("SELECT * FROM restaurant")
+    @Query("SELECT * FROM restaurant ORDER BY name ASC")
     fun findAllWithFoodItems(): Flow<List<RestaurantWithFoodItems>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

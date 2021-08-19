@@ -16,9 +16,8 @@ class FoodItemListViewModel @Inject internal constructor(
     val foodItems: LiveData<List<FoodItemWithRestaurant>> = restaurantRepository
         .getAllWithFoodItems()
         .map { list ->
-            list.flatMap { restaurant ->
-                restaurant.asFoodItemList()
-            }
+            list.flatMap { restaurant -> restaurant.asFoodItemList() }
+                .sortedBy { item -> item.foodItem.name }
         }
         .asLiveData()
 }
