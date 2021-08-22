@@ -18,7 +18,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
-import ttaomae.foodtracker.data.Restaurant
 import ttaomae.foodtracker.databinding.FragmentFoodItemEditBinding
 import ttaomae.foodtracker.viewmodel.FoodItemEditViewModel
 
@@ -67,37 +66,30 @@ class FoodItemEditFragment : Fragment(R.layout.fragment_food_item_edit) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val restaurants = mutableListOf<Restaurant>()
-        viewModel.restaurants.observe(viewLifecycleOwner) { result ->
-            restaurants.addAll(result)
+
+        viewModel.restaurants.observe(viewLifecycleOwner) { restaurants ->
             val textLayout =
                 view.findViewById<TextInputLayout>(R.id.text_input_layout_select_restaurant)
             val textView =
                 view.findViewById<AutoCompleteTextView>(R.id.text_input_select_restaurant)
-            textLayout.setEndIconOnClickListener { setupPopup(textLayout, restaurants, textView) }
-            textView.setOnClickListener { setupPopup(textLayout, restaurants, textView) }
-        }
-    }
 
-    private fun setupPopup(
-        anchor: View,
-        restaurants: List<Restaurant>,
-        textView: AutoCompleteTextView
-    ) {
-        val popup = PopupMenu(context, anchor)
+            // Create popup menu
+            val popup = PopupMenu(context, textLayout)
+            restaurants.forEachIndexed { index, restaurant ->
+                popup.menu.add(Menu.NONE, Menu.NONE, index, restaurant.name)
+            }
 
-        // Add all restaurants to list.
-        restaurants.forEachIndexed { index, restaurant ->
-            popup.menu.add(Menu.NONE, Menu.NONE, index, restaurant.name)
-        }
+            // When a popup menu item is clicked, set EditText value and update restaurant.
+            popup.setOnMenuItemClickListener { menuItem ->
+                textView.setText(menuItem.title)
+                viewModel.selectRestaurant(restaurants[menuItem.order].id)
+                true
+            }
 
-        // When a popup menu item is clicked, set EditText value and update restaurant.
-        popup.setOnMenuItemClickListener { menuItem ->
-            textView.setText(menuItem.title)
-            viewModel.selectRestaurant(restaurants[menuItem.order].id)
-            true
+            // Setup click listeners
+            textLayout.setEndIconOnClickListener { popup.show() }
+            textView.setOnClickListener { popup.show() }
         }
-        popup.show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
