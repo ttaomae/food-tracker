@@ -57,7 +57,7 @@ class RestaurantDetailFragment : Fragment(R.layout.fragment_restaurant_detail) {
         }
 
         viewModel.restaurant.observe(viewLifecycleOwner) { result ->
-            val items = result.asFoodItemList()
+            val items = result.asFoodItemList().sortedBy { it.foodItem.name }
             foodItemAdapter.submitList(items)
         }
 
