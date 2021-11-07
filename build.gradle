@@ -1,22 +1,21 @@
 buildscript {
-    ext.kotlin_version = "1.4.32"
-    ext.kotlin_coroutines_version = "1.4.3"
-    ext.core_ktx_version = "1.3.2"
-    ext.appcompat_version = "1.2.0"
+    ext.kotlin_version = "1.5.30"
+    ext.kotlin_coroutines_version = "1.5.2"
+    ext.core_ktx_version = "1.6.0"
+    ext.appcompat_version = "1.3.1"
     ext.room_version = "2.3.0"
-    ext.hilt_version = "2.31.2-alpha"
-    ext.nav_version = "2.3.4"
+    ext.hilt_version = "2.40"
+    ext.nav_version = "2.3.5"
     ext.lifecycle_version = "2.3.1"
-    ext.arch_version = "2.1.0"
-    ext.material_version = "1.3.0"
-    ext.constraintlayout_version = "2.0.4"
+    ext.material_version = "1.4.0"
+    ext.constraintlayout_version = "2.1.1"
 
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.3'
+        classpath 'com.android.tools.build:gradle:7.0.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
@@ -26,7 +25,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 
