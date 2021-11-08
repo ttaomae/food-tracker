@@ -19,7 +19,7 @@ import androidx.room.Relation
 )
 data class FoodItem(
     @PrimaryKey(autoGenerate = true) val id: Long,
-    @ColumnInfo(name = "restaurant_id") val restaurantId: Long,
+    @ColumnInfo(name = "restaurant_id", index = true) val restaurantId: Long,
     val name: String,
     val description: String?,
     val rating: Float,
