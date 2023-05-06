@@ -19,9 +19,9 @@ android {
         minSdk = Versions.Android.minSdk
         targetSdk = Versions.Android.targetSdk
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.0.1"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        setProperty("archivesBaseName", "food-tracker-$versionName")
     }
 
     buildTypes {
