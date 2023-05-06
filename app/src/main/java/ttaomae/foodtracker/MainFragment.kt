@@ -136,8 +136,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             }
 
             R.id.menu_item_export_data -> {
-                val filename = TIMESTAMP_FORMATTER.format(Calendar.getInstance().time)
-                exportFile.launch("$filename.json")
+                val timestamp = TIMESTAMP_FORMATTER.format(Calendar.getInstance().time)
+                exportFile.launch("food-tracker-$timestamp.json")
                 true
             }
 
