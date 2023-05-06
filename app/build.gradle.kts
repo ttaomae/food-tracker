@@ -31,11 +31,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         dataBinding = true
@@ -56,11 +56,9 @@ dependencies {
     implementation("androidx.room:room-ktx:${Versions.room}")
     implementation("com.google.android.material:material:${Versions.material}")
     implementation("com.google.dagger:hilt-android:${Versions.hilt}")
+    implementation("com.squareup.moshi:moshi:${Versions.moshi}")
 
     kapt("androidx.room:room-compiler:${Versions.room}")
     kapt("com.google.dagger:hilt-android-compiler:${Versions.hilt}")
-
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshi}")
 }

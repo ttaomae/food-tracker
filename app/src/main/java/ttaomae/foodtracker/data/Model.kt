@@ -6,6 +6,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.Relation
+import com.squareup.moshi.JsonClass
 
 @Entity(
     tableName = "food_item",
@@ -17,6 +18,7 @@ import androidx.room.Relation
         )
     ]
 )
+@JsonClass(generateAdapter = true)
 data class FoodItem(
     @PrimaryKey(autoGenerate = true) val id: Long,
     @ColumnInfo(name = "restaurant_id", index = true) val restaurantId: Long,
@@ -30,10 +32,12 @@ data class FoodItem(
 }
 
 @Entity(tableName = "restaurant")
+@JsonClass(generateAdapter = true)
 data class Restaurant(@PrimaryKey(autoGenerate = true) val id: Long, val name: String) {
     constructor(id: Long?, name: String) : this(id ?: 0L, name)
 }
 
+@JsonClass(generateAdapter = true)
 data class RestaurantWithFoodItems(
     @Embedded val restaurant: Restaurant,
     @Relation(
